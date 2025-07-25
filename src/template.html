@@ -3,14 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./icons/favicon.svg" />
     <title>SkySense | Weather Forecast</title>
   </head>
   <body>
     <div id="content">
-      <header id="header"></header>
+      <header id="header">
+        <div id="website-icon-name-container">
+          <img id="website-icon" src="./icons/favicon.svg" alt="Website Icon" />
+          <h1>SkySense</h1>
+        </div>
+        <div id="search-container">
+          <input type="text" id="search" name="search" />
+        </div>
+        <div id="unit-toggle-container">
+          <button id="celcius-toggle">°C</button>
+          <button id="fahrenheit-toggle">°F</button>
+        </div>
+      </header>
       <main id="main">
         <section id="forecast-details-container">
-          <section id="forecast-container"></section>
+          <!-- Add section for time and day -->
+          <section id="forecast-container">
+            <section id="time-day-container">
+              <p id="time">--:-- AM/PM</p>
+              <p id="day">Day</p>
+            </section>
+            <div id="temperature-description-details-container-wrapper">
+              <div id="temperature-description-container">
+                <div id="temperature-feelslike-container">
+                  <div id="temperature-feelslike-wrapper">
+                    <p id="temperature">Temp°C</p>
+                    <p id="feelslike">Feels like Temp°C</p>
+                  </div>
+                </div>
+                <p id="description">
+                  Current weather description...
+                </p>
+              </div>
+              <div id="icon-status-container">
+                <img src="#" alt="overcast icon" id="weather-icon">
+                <h2 id="weather-condition">Condition</h2>
+              </div>
+            </div>
+          </section>
           <section id="details-container"></section>
         </section>
         <section id="days-hours-container"></section>
