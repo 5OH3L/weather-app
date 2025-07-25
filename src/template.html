@@ -23,31 +23,112 @@
       </header>
       <main id="main">
         <section id="forecast-details-container">
-          <!-- Add section for time and day -->
           <section id="forecast-container">
             <section id="time-day-container">
-              <p id="time">--:-- AM/PM</p>
-              <p id="day">Day</p>
+              <p id="time">--:-- --</p>
+              <p id="day">--</p>
             </section>
             <div id="temperature-description-details-container-wrapper">
               <div id="temperature-description-container">
                 <div id="temperature-feelslike-container">
                   <div id="temperature-feelslike-wrapper">
-                    <p id="temperature">Temp°C</p>
-                    <p id="feelslike">Feels like Temp°C</p>
+                    <p id="temperature">--°C</p>
+                    <p id="feelslike">Feels like --°C</p>
                   </div>
                 </div>
                 <p id="description">
-                  Current weather description...
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                 </p>
               </div>
               <div id="icon-status-container">
-                <img src="#" alt="overcast icon" id="weather-icon">
-                <h2 id="weather-condition">Condition</h2>
+                <img src="#" alt="day cloudy color icon" id="weather-icon">
+                <h2 id="weather-condition">----</h2>
               </div>
             </div>
           </section>
-          <section id="details-container"></section>
+          <section id="details-container">
+            <h2>Details</h2>
+            <section id="detail-1" class="detail-section">
+              <div id="detail-location-container" class="detail">
+                <img src="./icons/details/icon-location.svg" alt="location icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-location">Location</div>
+                  <div id="detail-location">--</div>
+                </div>
+              </div>
+              <div id="detail-date-container" class="detail">
+                <img src="./icons/weekday/icon-week-day-monday.svg" alt="date icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-date">Date</div>
+                  <div id="detail-date">--/--/--</div>
+                </div>
+              </div>
+            </section>
+            <section id="detail-2" class="detail-section">
+              <div id="detail-humidity-container" class="detail">
+                <img src="./icons/details/icon-humidity.svg" alt="humidity icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-humidity">Humidity</div>
+                  <div id="detail-humidity">--%</div>
+                </div>
+              </div>
+              <div id="detail-uvindex-container" class="detail">
+                <img src="./icons/details/icon-uvindex.svg" alt="uvindex icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-uvindex">UV Index</div>
+                  <div id="detail-uvindex">--</div>
+                </div>
+              </div>
+            </section>
+            <section id="detail-3" class="detail-section">
+              <div id="detail-precipiation-container" class="detail">
+                <img src="./icons/details/icon-rain.svg" alt="precipiation icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-precipiation">Precipitation</div>
+                  <div id="detail-precipiation">--%</div>
+                </div>
+              </div>
+              <div id="detail-pressure-container" class="detail">
+                <img src="./icons/details/icon-pressure.svg" alt="pressure icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-pressure">Pressure</div>
+                  <div id="detail-pressure">--- mb</div>
+                </div>
+              </div>
+            </section>
+            <section id="detail-4" class="detail-section">
+              <div id="detail-wind-container" class="detail">
+                <img src="./icons/details/icon-wind.svg" alt="wind icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-wind">Wind</div>
+                  <div id="detail-wind">-- km/h</div>
+                </div>
+              </div>
+              <div id="detail-windgust-container" class="detail">
+                <img src="./icons/details/icon-windgust.svg" alt="windgust icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-windgust">Wind Gust</div>
+                  <div id="detail-windgust">-- km/h</div>
+                </div>
+              </div>
+            </section>
+            <section id="detail-5" class="detail-section">
+              <div id="detail-sunrise-container" class="detail">
+                <img src="./icons/details/icon-sunrise.svg" alt="sunrise icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-sunrise">Sunrise</div>
+                  <div id="detail-sunrise">-- --</div>
+                </div>
+              </div>
+              <div id="detail-sunset-container" class="detail">
+                <img src="./icons/details/icon-sunset.svg" alt="sunset icon" class="detail-icon">
+                <div class="detail-label-text-container">
+                  <div id="detail-label-sunset">Sunset</div>
+                  <div id="detail-sunset">-- --</div>
+                </div>
+              </div>
+            </section>
+          </section>
         </section>
         <section id="days-hours-container"></section>
       </main>
