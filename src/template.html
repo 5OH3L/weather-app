@@ -26,7 +26,7 @@
           <section id="forecast-container">
             <section id="time-day-container">
               <p id="time">--:-- --</p>
-              <p id="day">--</p>
+              <p id="day">------</p>
             </section>
             <div id="temperature-description-details-container-wrapper">
               <div id="temperature-description-container">
@@ -37,11 +37,11 @@
                   </div>
                 </div>
                 <p id="description">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 </p>
               </div>
               <div id="icon-status-container">
-                <img src="#" alt="day cloudy color icon" id="weather-icon">
+                <img src="#" alt="day cloudy color icon" id="weather-icon" data-icon="partly-cloudy-day">
                 <h2 id="weather-condition">----</h2>
               </div>
             </div>
@@ -60,7 +60,7 @@
                 <img src="./icons/weekday/icon-week-day-monday.svg" alt="date icon" class="detail-icon">
                 <div class="detail-label-text-container">
                   <div id="detail-label-date">Date</div>
-                  <div id="detail-date">--/--/--</div>
+                  <div id="detail-date">----------</div>
                 </div>
               </div>
             </section>
@@ -69,14 +69,14 @@
                 <img src="./icons/details/icon-humidity.svg" alt="humidity icon" class="detail-icon">
                 <div class="detail-label-text-container">
                   <div id="detail-label-humidity">Humidity</div>
-                  <div id="detail-humidity">--%</div>
+                  <div id="detail-humidity">---%</div>
                 </div>
               </div>
               <div id="detail-uvindex-container" class="detail">
                 <img src="./icons/details/icon-uvindex.svg" alt="uvindex icon" class="detail-icon">
                 <div class="detail-label-text-container">
                   <div id="detail-label-uvindex">UV Index</div>
-                  <div id="detail-uvindex">--</div>
+                  <div id="detail-uvindex">-</div>
                 </div>
               </div>
             </section>
@@ -85,7 +85,7 @@
                 <img src="./icons/details/icon-rain.svg" alt="precipiation icon" class="detail-icon">
                 <div class="detail-label-text-container">
                   <div id="detail-label-precipiation">Precipitation</div>
-                  <div id="detail-precipiation">--%</div>
+                  <div id="detail-precipiation">---%</div>
                 </div>
               </div>
               <div id="detail-pressure-container" class="detail">
@@ -117,20 +117,77 @@
                 <img src="./icons/details/icon-sunrise.svg" alt="sunrise icon" class="detail-icon">
                 <div class="detail-label-text-container">
                   <div id="detail-label-sunrise">Sunrise</div>
-                  <div id="detail-sunrise">-- --</div>
+                  <div id="detail-sunrise">--:-- AM</div>
                 </div>
               </div>
               <div id="detail-sunset-container" class="detail">
                 <img src="./icons/details/icon-sunset.svg" alt="sunset icon" class="detail-icon">
                 <div class="detail-label-text-container">
                   <div id="detail-label-sunset">Sunset</div>
-                  <div id="detail-sunset">-- --</div>
+                  <div id="detail-sunset">--:-- PM</div>
                 </div>
               </div>
             </section>
           </section>
         </section>
-        <section id="days-hours-container"></section>
+        <section id="days-hours-container">
+          <div id="days-hours-toggle-container">
+            <button id="days-toggle">Days</button>
+            <button id="hours-toggle">Hours</button>
+          </div>
+          <div id="days-hours">
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+            <div class="day-hour">
+              <div class="weekday-daytime">Today</div>
+              <img src="#" alt="Rain Icon" class="icon weather-condition-icon" data-icon="rain">
+              <p class="weekday-daytime-temperature">--°C</p>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   </body>

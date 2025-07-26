@@ -43,6 +43,7 @@ body {
   height: 3.6rem;
   aspect-ratio: 1/1;
   cursor: pointer;
+  pointer-events: none;
 }
 #website-icon ~ h1 {
   color: #96d0f7;
@@ -96,28 +97,23 @@ body {
   gap: 1rem;
 }
 #forecast-details-container {
-  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex: 3;
+  flex: 2.2;
   gap: 1rem;
 }
 #forecast-details-container > * {
   height: 100%;
 }
-#forecast-details-container > #forecast-container {
-  flex: 2;
-}
-#forecast-details-container > #details-container {
-  flex: 1;
-}
 #forecast-container {
+  flex: 2;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
   align-items: stretch;
-  background-color: rgba(255, 255, 255, 0.5);
+  border: 0.15rem solid black;
+  border-radius: 0.4rem;
 }
 #forecast-container > #time-day-container {
   flex: 1;
@@ -184,7 +180,8 @@ body {
   gap: 1rem;
 }
 #icon-status-container > #weather-icon {
-  --size: 17rem;
+  --size: 15rem;
+  pointer-events: none;
   height: var(--size);
   width: var(--size);
 }
@@ -195,6 +192,7 @@ body {
   flex: 1;
 }
 #details-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -210,7 +208,7 @@ body {
   gap: 1rem;
   flex: 1;
 }
-#details-container > .detail-section:not(:first-child) > *{
+#details-container > .detail-section:not(:first-child) > * {
   margin-left: 2rem;
 }
 #details-container > :first-child {
@@ -226,11 +224,81 @@ body {
 .detail-label-text-container > :first-child {
   color: rgba(0, 0, 0, 0.6);
 }
-#main > *:last-child {
-  border: 0.4rem solid black;
-}
 .detail-icon {
   --size: 2rem;
+  pointer-events: none;
+  height: var(--size);
+  width: var(--size);
+}
+#days-hours-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  border: 0.15rem solid black;
+  border-radius: 0.4rem;
+}
+#days-hours-toggle-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0.4rem;
+  margin-top: 0;
+  --days-hours-border-radius: 0.4rem;
+  overflow-y: hidden;
+}
+#days-toggle,
+#hours-toggle {
+  background: none;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 1.2rem;
+  padding: 0.2rem 0.6rem;
+  border: 0.15rem solid black;
+  border-top: none;
+  text-align: center;
+  cursor: pointer;
+}
+#days-toggle {
+  border-right: none;
+  border-bottom-left-radius: var(--days-hours-border-radius);
+}
+#hours-toggle {
+  border-bottom-right-radius: var(--days-hours-border-radius);
+}
+#days-hours-container > #days-hours {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  flex: 1;
+}
+#days-hours-container > #days-hours > .day-hour {
+  border: 2px solid black;
+  height: 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 0.4rem;
+  flex-shrink: 0;
+  width: 9.15rem;
+  cursor: pointer;
+}
+#days-hours-container > #days-hours > .day-hour > .weekday-daytime {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+#days-hours-container > #days-hours > .day-hour > .weekday-daytime-temperature {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+#days-hours-container > #days-hours > .day-hour > .weather-condition-icon {
+  --size: 3.4rem;
   height: var(--size);
   width: var(--size);
 }
