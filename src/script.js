@@ -1,4 +1,3 @@
-import { get } from "jquery";
 import "./styles.css";
 
 function formatData(json) {
