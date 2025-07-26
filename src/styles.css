@@ -9,6 +9,33 @@ body {
   height: 100dvh;
   width: 100dvw;
   font-family: Arial, Helvetica, sans-serif;
+  background-position: center;
+  background-size: cover;
+  background-image: url("./images/backgrounds/background-day.jpg");
+  --search-background-color: rgba(255, 255, 255, 0.1);
+  --serach-padding: 0.8rem 3.5rem;
+  --serach-border: 0.12rem solid rgba(0, 0, 0, 0.5);
+  --section-border: 0.15rem solid black;
+  --text-color: black;
+  --section-backdrop-filter: blur(0.8rem);
+  --days-hours-scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+}
+body::before{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: 100dvw;
+  content: '';
+  backdrop-filter: blur(0.1rem);
+  z-index: -1;
+}
+body.night {
+  background-image: url("./images/backgrounds/background-night.jpg");
+  --serach-border: 0.12rem solid rgba(255, 255, 255, 0.5);
+  --section-border: 0.15rem solid rgba(255, 255, 255, 0.8);
+  --text-color: white;
+  --days-hours-scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
 }
 #content {
   height: 100%;
@@ -40,7 +67,7 @@ body {
   gap: 0.5rem;
 }
 #website-icon {
-  height: 3.6rem;
+  height: 3.4rem;
   aspect-ratio: 1/1;
   cursor: pointer;
   pointer-events: none;
@@ -50,14 +77,46 @@ body {
 }
 #search-container {
   flex: 1.5;
+  position: relative;
+  backdrop-filter: var(--section-backdrop-filter);
+  --side-padding: 4%;
+}
+#search-button,
+#erase-button {
+  background: none;
+  border: none;
+  outline: none;
+  position: absolute;
+  color: var(--text-color);
+  --size: 1.5rem;
+  height: var(--size);
+  width: var(--size);
+  cursor: pointer;
+}
+#search-button > .icon,
+#erase-button > .icon {
+  height: 100%;
+  width: 100%;
+}
+body.night #search-button > .icon,
+body.night #erase-button > .icon{
+  filter: invert(1);
+}
+#search-button {
+  left: var(--side-padding);
+}
+#erase-button {
+  right: var(--side-padding);
 }
 #search {
+  position: relative;
   width: 100%;
+  border: var(--serach-border);
   outline: none;
-  border: 0.15rem solid black;
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 0.4rem;
-  padding: 0.2rem 0.4rem;
+  color: var(--text-color);
+  background-color: var(--search-background-color);
+  border-radius: 2rem;
+  padding: var(--serach-padding);
   font-size: 1.5rem;
 }
 #unit-toggle-container {
@@ -69,13 +128,14 @@ body {
 #celcius-toggle,
 #fahrenheit-toggle {
   background: none;
-  border: none;
+  border: var(--section-border);
+  backdrop-filter: var(--section-backdrop-filter);
   outline: none;
   font-family: inherit;
+  color: var(--text-color);
   height: 80%;
   width: 25%;
   font-size: 1.5rem;
-  border: 0.15rem solid black;
   text-align: center;
   cursor: pointer;
 }
@@ -112,8 +172,10 @@ body {
   flex-direction: column;
   justify-content: stretch;
   align-items: stretch;
-  border: 0.15rem solid black;
+  border: var(--section-border);
   border-radius: 0.4rem;
+  color: var(--text-color);
+  backdrop-filter: var(--section-backdrop-filter);
 }
 #forecast-container > #time-day-container {
   flex: 1;
@@ -134,11 +196,11 @@ body {
   align-items: center;
 }
 #temperature-description-container {
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
-  gap: 4rem;
   flex: 1.5;
 }
 
@@ -156,7 +218,8 @@ body {
   font-weight: 500;
 }
 #temperature-feelslike-wrapper > #feelslike {
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--text-color);
+  opacity: 0.8;
   font-size: 1.2rem;
 }
 #temperature-description-container > #description {
@@ -196,9 +259,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  border: 2px solid black;
   padding: 1rem;
   border-radius: 0.4rem;
+  border: var(--section-border);
+  color: var(--text-color);
+  backdrop-filter: var(--section-backdrop-filter);
 }
 #details-container > .detail-section:not(:first-child) {
   display: grid;
@@ -214,7 +279,7 @@ body {
 #details-container > :first-child {
   letter-spacing: 0.1rem;
   text-align: center;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  border-bottom: var(--section-border);
   padding-bottom: 0.4rem;
 }
 .detail-section > .detail {
@@ -222,7 +287,8 @@ body {
   gap: 0.5rem;
 }
 .detail-label-text-container > :first-child {
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--text-color);
+  opacity: 0.6;
 }
 .detail-icon {
   --size: 2rem;
@@ -230,13 +296,18 @@ body {
   height: var(--size);
   width: var(--size);
 }
+body.night .detail-icon.night{
+  filter: invert(1);
+}
 #days-hours-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  border: 0.15rem solid black;
+  border: var(--section-border);
   border-radius: 0.4rem;
+  color: var(--text-color);
+  backdrop-filter: var(--section-backdrop-filter);
 }
 #days-hours-toggle-container {
   display: flex;
@@ -244,6 +315,7 @@ body {
   align-items: center;
   margin: 0.4rem;
   margin-top: 0;
+  color: var(--text-color);
   --days-hours-border-radius: 0.4rem;
   overflow-y: hidden;
 }
@@ -253,9 +325,10 @@ body {
   border: none;
   outline: none;
   font-family: inherit;
+  color: inherit;
   font-size: 1.2rem;
   padding: 0.2rem 0.6rem;
-  border: 0.15rem solid black;
+  border: var(--section-border);
   border-top: none;
   text-align: center;
   cursor: pointer;
@@ -275,10 +348,12 @@ body {
   padding: 0.4rem;
   overflow-y: hidden;
   overflow-x: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--days-hours-scrollbar-color);
   flex: 1;
 }
 #days-hours-container > #days-hours > .day-hour {
-  border: 2px solid black;
+  border: var(--section-border);
   height: 8rem;
   display: flex;
   flex-direction: column;
