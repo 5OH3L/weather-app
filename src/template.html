@@ -18,7 +18,7 @@
           <button id="search-button"><img src="./icons/icon-search.svg" alt="Search Icon" class="icon"></button>
           <button id="erase-button"><img src="./icons/icon-erase.svg" alt="Erase Icon" class="icon"></button>
         </div>
-        <div id="unit-toggle-container">
+        <div id="unit-toggle-container" class="celcius" data-selected="celcius">
           <button id="celcius-toggle">°C</button>
           <button id="fahrenheit-toggle">°F</button>
         </div>
@@ -86,8 +86,8 @@
               <div id="detail-precipiation-container" class="detail">
                 <img src="./icons/details/icon-rain.svg" alt="precipiation icon" class="detail-icon">
                 <div class="detail-label-text-container">
-                  <div id="detail-label-precipiation">Precipitation</div>
-                  <div id="detail-precipiation">---%</div>
+                  <div id="detail-label-precipitation">Precipitation</div>
+                  <div id="detail-precipitation">---%</div>
                 </div>
               </div>
               <div id="detail-pressure-container" class="detail">
@@ -133,7 +133,7 @@
           </section>
         </section>
         <section id="days-hours-container">
-          <div id="days-hours-toggle-container">
+          <div id="days-hours-toggle-container" class="days" data-selected="days">
             <button id="days-toggle">Days</button>
             <button id="hours-toggle">Hours</button>
           </div>

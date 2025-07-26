@@ -20,13 +20,13 @@ body {
   --section-backdrop-filter: blur(0.8rem);
   --days-hours-scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
 }
-body::before{
+body::before {
   position: fixed;
   top: 0;
   left: 0;
   height: 100dvh;
   width: 100dvw;
-  content: '';
+  content: "";
   backdrop-filter: blur(0.1rem);
   z-index: -1;
 }
@@ -99,7 +99,7 @@ body.night {
   width: 100%;
 }
 body.night #search-button > .icon,
-body.night #erase-button > .icon{
+body.night #erase-button > .icon {
   filter: invert(1);
 }
 #search-button {
@@ -138,13 +138,18 @@ body.night #erase-button > .icon{
   font-size: 1.5rem;
   text-align: center;
   cursor: pointer;
+  transition: background-color 0.3s ease, border 0.3s ease;
+}
+#unit-toggle-container.celcius #celcius-toggle,
+#unit-toggle-container.fahrenheit #fahrenheit-toggle {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 #celcius-toggle {
-  border-right: none;
   border-top-left-radius: var(--unit-border-radius);
   border-bottom-left-radius: var(--unit-border-radius);
 }
 #fahrenheit-toggle {
+  border-left: none;
   border-top-right-radius: var(--unit-border-radius);
   border-bottom-right-radius: var(--unit-border-radius);
 }
@@ -296,7 +301,7 @@ body.night #erase-button > .icon{
   height: var(--size);
   width: var(--size);
 }
-body.night .detail-icon.night{
+body.night .detail-icon.night {
   filter: invert(1);
 }
 #days-hours-container {
@@ -332,6 +337,12 @@ body.night .detail-icon.night{
   border-top: none;
   text-align: center;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+#days-hours-toggle-container.days #days-toggle,
+#days-hours-toggle-container.hours #hours-toggle {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 #days-toggle {
   border-right: none;
