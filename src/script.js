@@ -15,6 +15,7 @@ const DOMDescription = document.getElementById("description");
 const DOMWeatherConditionIcon = document.getElementById("weather-icon");
 const DOMWeatherCondition = document.getElementById("weather-condition");
 const DOMDetailLocation = document.getElementById("detail-location");
+const DOMDetailIconDate = document.getElementById("detail-icon-date");
 const DOMDetailDate = document.getElementById("detail-date");
 const DOMDetailHumidity = document.getElementById("detail-humidity");
 const DOMDetailUVIndex = document.getElementById("detail-uvindex");
@@ -216,6 +217,10 @@ async function getWeather(location) {
 function displayForecast(data) {
   DOMTime.textContent = data.time;
   DOMDay.textContent = data.weekday;
+  import("./weather-icons.js").then((module) => {
+    DOMDetailIconDate.src =
+      module[`icon0weekday0${data.weekday.toLowerCase()}`];
+  });
   DOMTemperature.textContent = data.temperature;
   DOMFeelslikeTemperature.textContent = data.feelslike;
   DOMDescription.textContent = data.description;
