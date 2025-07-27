@@ -26,6 +26,7 @@ const DOMDetailSunset = document.getElementById("detail-sunset");
 const daysHoursToggle = document.getElementById("days-hours-toggle-container");
 const daysToggle = document.getElementById("days-toggle");
 const hoursToggle = document.getElementById("hours-toggle");
+const daysHoursContainer = document.getElementById("days-hours");
 
 search.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
@@ -201,4 +202,49 @@ function displayForecast(data) {
   DOMDetailWindGust.textContent = data.windgust;
   DOMDetailSunrise.textContent = data.sunrise;
   DOMDetailSunset.textContent = data.sunset;
+}
+
+function processDays(days) {
+  const processedDays = [];
+  days.forEach((day) => {
+    const processedDay = {};
+    let weekday = processWeekday(day.datetime);
+    processedDay.weekday =
+      new Date(day.datetime).getDate() === new Date().getDate()
+        ? "Today"
+        : weekday;
+    processedDay.icon = day.icon;
+    processedDay.temperature = `${day.temp}°C`;
+    processedDay.conditions = day.conditions;
+    processedDays.push(processedDay);
+  });
+  return processedDays;
+}
+function displayForecastDays(days) {
+  daysHoursContainer.innerHTML = "";
+  days.forEach((day) => {
+    const DOMDayContainer = document.createElement("div");
+    DOMDayContainer.className = "day-hour";
+
+    const DOMWeekday = document.createElement("div");
+    DOMWeekday.textContent = day.weekday;
+    DOMWeekday.className = "weekday-daytime";
+    DOMDayContainer.appendChild(DOMWeekday);
+
+    const DOMIcon = document.createElement("img");
+    import("./weather-icons.js").then((module) => {
+      DOMIcon.src = module[`icon0${day.icon.split("-").join("0")}`];
+    });
+    DOMIcon.alt = `${day.icon.split("-").join(" ")} icon`
+    DOMIcon.className = "weather-condition-icon"
+    DOMIcon.dataset.icon = day.icon
+    DOMDayContainer.appendChild(DOMIcon)
+
+    const DOMDayTemperature = document.createElement('p')
+    DOMDayTemperature.textContent = day.temperature
+    DOMDayTemperature.className = "weekday-daytime-temperature"
+    DOMDayContainer.appendChild(DOMDayTemperature)
+
+    daysHoursContainer.appendChild(DOMDayContainer);
+  });
 }

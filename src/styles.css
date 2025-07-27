@@ -366,7 +366,8 @@ body.night .detail-icon.night {
   overflow-x: scroll;
   scrollbar-width: thin;
   scrollbar-color: var(--days-hours-scrollbar-color);
-  flex: 1;
+  height: 9.5rem;
+  flex-shrink: 0;
 }
 #days-hours-container > #days-hours > .day-hour {
   border: var(--section-border);
