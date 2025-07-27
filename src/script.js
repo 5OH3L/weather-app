@@ -224,6 +224,8 @@ function displayForecastDays(days) {
   daysHoursContainer.innerHTML = "";
   days.forEach((day) => {
     const DOMDayContainer = document.createElement("div");
+    DOMDayContainer.dataset.conditions = day.conditions
+    DOMDayContainer.title = day.conditions
     DOMDayContainer.className = "day-hour";
 
     const DOMWeekday = document.createElement("div");
