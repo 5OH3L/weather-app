@@ -224,8 +224,8 @@ function displayForecastDays(days) {
   daysHoursContainer.innerHTML = "";
   days.forEach((day) => {
     const DOMDayContainer = document.createElement("div");
-    DOMDayContainer.dataset.conditions = day.conditions
-    DOMDayContainer.title = day.conditions
+    DOMDayContainer.dataset.conditions = day.conditions;
+    DOMDayContainer.title = day.conditions;
     DOMDayContainer.className = "day-hour";
 
     const DOMWeekday = document.createElement("div");
@@ -237,16 +237,58 @@ function displayForecastDays(days) {
     import("./weather-icons.js").then((module) => {
       DOMIcon.src = module[`icon0${day.icon.split("-").join("0")}`];
     });
-    DOMIcon.alt = `${day.icon.split("-").join(" ")} icon`
-    DOMIcon.className = "weather-condition-icon"
-    DOMIcon.dataset.icon = day.icon
-    DOMDayContainer.appendChild(DOMIcon)
+    DOMIcon.alt = `${day.icon.split("-").join(" ")} icon`;
+    DOMIcon.className = "weather-condition-icon";
+    DOMIcon.dataset.icon = day.icon;
+    DOMDayContainer.appendChild(DOMIcon);
 
-    const DOMDayTemperature = document.createElement('p')
-    DOMDayTemperature.textContent = day.temperature
-    DOMDayTemperature.className = "weekday-daytime-temperature"
-    DOMDayContainer.appendChild(DOMDayTemperature)
+    const DOMDayTemperature = document.createElement("p");
+    DOMDayTemperature.textContent = day.temperature;
+    DOMDayTemperature.className = "weekday-daytime-temperature";
+    DOMDayContainer.appendChild(DOMDayTemperature);
 
     daysHoursContainer.appendChild(DOMDayContainer);
+  });
+}
+function processHours(hours) {
+  const processedHours = [];
+  hours.forEach((hour) => {
+    const processedHour = {};
+    processedHour.time = processTime(hour.datetime);
+    processedHour.icon = hour.icon;
+    processedHour.temperature = `${hour.temp}°C`;
+    processedHour.conditions = hour.conditions;
+    processedHours.push(processedHour);
+  });
+  return processedHours;
+}
+function displayForecastHours(hours) {
+  daysHoursContainer.innerHTML = "";
+  hours.forEach((hour) => {
+    const DOMHourContainer = document.createElement("div");
+    DOMHourContainer.dataset.conditions = hour.conditions;
+    DOMHourContainer.title = hour.conditions;
+    DOMHourContainer.className = "day-hour";
+
+    const DOMTime = document.createElement("div");
+    DOMTime.textContent = hour.time;
+    DOMTime.className = "weekday-daytime";
+    DOMHourContainer.appendChild(DOMTime);
+
+    const DOMIcon = document.createElement("img");
+    import("./weather-icons.js").then((module) => {
+      DOMIcon.src = module[`icon0${hour.icon.split("-").join("0")}`];
+    });
+    DOMIcon.alt = `${hour.icon.split("-").join(" ")} icon`;
+    DOMIcon.className = "weather-condition-icon";
+    DOMIcon.dataset.icon = hour.icon;
+    DOMHourContainer.appendChild(DOMIcon);
+
+    const DOMHourTemperature = document.createElement("p");
+    DOMHourTemperature.textContent = hour.temperature;
+    DOMHourTemperature.className = "weekday-daytime-temperature";
+    DOMHourContainer.appendChild(DOMHourTemperature);
+
+    daysHoursContainer.appendChild(DOMHourContainer);
   });
 }
