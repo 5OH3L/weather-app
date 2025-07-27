@@ -1,5 +1,8 @@
 import "./styles.css";
 
+const search = document.getElementById("search");
+const searchButton = document.getElementById("search-button");
+const eraseButton = document.getElementById("erase-button");
 const unitToggle = document.getElementById("unit-toggle-container");
 const celciusToggle = document.getElementById("celcius-toggle");
 const fahrenheitToggle = document.getElementById("fahrenheit-toggle");
@@ -23,6 +26,27 @@ const DOMDetailSunset = document.getElementById("detail-sunset");
 const daysHoursToggle = document.getElementById("days-hours-toggle-container");
 const daysToggle = document.getElementById("days-toggle");
 const hoursToggle = document.getElementById("hours-toggle");
+
+search.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    searchWeather();
+    search.value = "";
+  }
+});
+
+searchButton.addEventListener("click", searchWeather);
+eraseButton.addEventListener("click", () => {
+  search.value = "";
+});
+
+function searchWeather() {
+  if (search.value.trim() !== "" || search.value.trim() !== null) {
+    getWeather(search.value).then((response) => {
+      displayForecast(processData(response));
+    });
+  }
+}
 
 celciusToggle.addEventListener("click", () => {
   if (!(unitToggle.dataset.selected === "celcius")) {
@@ -86,8 +110,8 @@ function processData(data, dayIndex = null, hourIndex = new Date().getHours()) {
     // Get requested day's and/or hour's weather information
     const day = days[dayIndex];
     const hour = day.hours[hourIndex];
-    console.log(day)
-    console.log(hour)
+    console.log(day);
+    console.log(hour);
     time = processTime(hour.datetime);
     weekday = processWeekday(day.datetime);
     temperature = `${hour.temp}°C`;
@@ -157,8 +181,6 @@ async function getWeather(location) {
   return json;
 }
 function displayForecast(data) {
-  console.table(data);
-  console.log(tempResponse);
   DOMTime.textContent = data.time;
   DOMDay.textContent = data.weekday;
   DOMTemperature.textContent = data.temperature;

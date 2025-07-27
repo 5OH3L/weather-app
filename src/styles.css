@@ -254,7 +254,8 @@ body.night #erase-button > .icon {
   width: var(--size);
 }
 #icon-status-container > #weather-condition {
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.1rem;
+  white-space: nowrap;
 }
 #days-hours-container {
   flex: 1;
@@ -291,6 +292,9 @@ body.night #erase-button > .icon {
 .detail-section > .detail {
   display: flex;
   gap: 0.5rem;
+}
+#detail-location{
+  white-space: wrap;
 }
 .detail-label-text-container > :first-child {
   color: var(--text-color);
