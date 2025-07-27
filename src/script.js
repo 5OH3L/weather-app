@@ -28,6 +28,8 @@ const daysToggle = document.getElementById("days-toggle");
 const hoursToggle = document.getElementById("hours-toggle");
 const daysHoursContainer = document.getElementById("days-hours");
 
+let APIResponse = null;
+
 search.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
@@ -41,10 +43,24 @@ eraseButton.addEventListener("click", () => {
   search.value = "";
 });
 
+function displayDaysHours(response) {
+  if (daysHoursToggle.dataset.selected === "days") {
+    displayForecastDays(processDays(response.days));
+  } else if (daysHoursToggle.dataset.selected === "hours") {
+    displayForecastHours(
+      processHours(
+        response.days[daysHoursContainer.dataset.selectedDayIndex].hours
+      )
+    );
+  }
+}
+
 function searchWeather() {
   if (search.value.trim() !== "" || search.value.trim() !== null) {
     getWeather(search.value).then((response) => {
       displayForecast(processData(response));
+      displayDaysHours(response);
+      APIResponse = response;
     });
   }
 }
@@ -64,12 +80,20 @@ fahrenheitToggle.addEventListener("click", () => {
   }
 });
 daysToggle.addEventListener("click", () => {
+  if (daysHoursToggle.dataset.selected === "days") return;
   daysHoursToggle.dataset.selected = "days";
   daysHoursToggle.className = "days";
+  if (APIResponse !== null) {
+    displayDaysHours(APIResponse);
+  }
 });
 hoursToggle.addEventListener("click", () => {
+  if (daysHoursToggle.dataset.selected === "hours") return;
   daysHoursToggle.dataset.selected = "hours";
   daysHoursToggle.className = "hours";
+  if (APIResponse !== null) {
+    displayDaysHours(APIResponse);
+  }
 });
 function processTime(time) {
   let isPM = false;
@@ -222,8 +246,9 @@ function processDays(days) {
 }
 function displayForecastDays(days) {
   daysHoursContainer.innerHTML = "";
-  days.forEach((day) => {
+  days.forEach((day, dayIndex) => {
     const DOMDayContainer = document.createElement("div");
+    DOMDayContainer.dataset.index = dayIndex;
     DOMDayContainer.dataset.conditions = day.conditions;
     DOMDayContainer.title = day.conditions;
     DOMDayContainer.className = "day-hour";
@@ -249,6 +274,7 @@ function displayForecastDays(days) {
 
     daysHoursContainer.appendChild(DOMDayContainer);
   });
+  daysHoursContainer.dataset.selectedDayIndex = "0";
 }
 function processHours(hours) {
   const processedHours = [];
