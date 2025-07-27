@@ -293,7 +293,7 @@ body.night #erase-button > .icon {
   display: flex;
   gap: 0.5rem;
 }
-#detail-location{
+#detail-location {
   white-space: wrap;
 }
 .detail-label-text-container > :first-child {
@@ -379,7 +379,14 @@ body.night .detail-icon.night {
   border-radius: 0.4rem;
   flex-shrink: 0;
   width: 9.15rem;
+  pointer-events: all;
   cursor: pointer;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, border 0.3s ease;
+}
+#days-hours-container > #days-hours > .day-hour.selected {
+  box-shadow: 0 0 0.5rem 0.05rem rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.5);
 }
 #days-hours-container > #days-hours > .day-hour > .weekday-daytime {
   font-size: 1.4rem;

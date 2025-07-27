@@ -28,6 +28,10 @@ const daysToggle = document.getElementById("days-toggle");
 const hoursToggle = document.getElementById("hours-toggle");
 const daysHoursContainer = document.getElementById("days-hours");
 
+function init() {
+  daysHoursContainer.dataset.selectedHourIndex = APIResponse.currentConditions.datetime.slice(0,2);
+}
+
 let APIResponse = null;
 
 search.addEventListener("keydown", (e) => {
@@ -135,12 +139,10 @@ function processData(data, dayIndex = null, hourIndex = new Date().getHours()) {
     // Get requested day's and/or hour's weather information
     const day = days[dayIndex];
     const hour = day.hours[hourIndex];
-    console.log(day);
-    console.log(hour);
     time = processTime(hour.datetime);
     weekday = processWeekday(day.datetime);
-    temperature = `${hour.temp}°C`;
-    feelslike = `Feels like ${hour.feelslike}°C`;
+    temperature = `${hour.temp.toFixed(0)}°C`;
+    feelslike = `Feels like ${hour.feelslike.toFixed(0)}°C`;
     description = day.description;
     icon = hour.icon;
     condition = hour.conditions;
@@ -159,8 +161,8 @@ function processData(data, dayIndex = null, hourIndex = new Date().getHours()) {
     const currentConditions = data.currentConditions;
     time = processTime(currentConditions.datetime);
     weekday = processWeekday(days[0].datetime);
-    temperature = `${currentConditions.temp}°C`;
-    feelslike = `Feels like ${currentConditions.feelslike}°C`;
+    temperature = `${currentConditions.temp.toFixed(0)}°C`;
+    feelslike = `Feels like ${currentConditions.feelslike.toFixed(0)}°C`;
     description = days[0].description;
     icon = currentConditions.icon;
     condition = currentConditions.conditions;
@@ -238,11 +240,24 @@ function processDays(days) {
         ? "Today"
         : weekday;
     processedDay.icon = day.icon;
-    processedDay.temperature = `${day.temp}°C`;
+    processedDay.temperature = `${day.temp.toFixed(0)}°C`;
     processedDay.conditions = day.conditions;
     processedDays.push(processedDay);
   });
   return processedDays;
+}
+function loadSelectedDay(elementIndex) {
+  if (daysHoursContainer.dataset.selectedDayIndex === elementIndex) return;
+  daysHoursContainer.dataset.selectedDayIndex = elementIndex;
+  const children = [...daysHoursContainer.children];
+  children.forEach((child) => {
+    if (child.dataset.index == elementIndex) {
+      child.className = "day-hour selected";
+    } else {
+      child.className = "day-hour";
+    }
+  });
+  displayForecast(processData(APIResponse, elementIndex, daysHoursContainer.dataset.selectedHourIndex));
 }
 function displayForecastDays(days) {
   daysHoursContainer.innerHTML = "";
@@ -252,6 +267,9 @@ function displayForecastDays(days) {
     DOMDayContainer.dataset.conditions = day.conditions;
     DOMDayContainer.title = day.conditions;
     DOMDayContainer.className = "day-hour";
+    DOMDayContainer.addEventListener("click", (event) => {
+      loadSelectedDay(event.currentTarget.dataset.index);
+    });
 
     const DOMWeekday = document.createElement("div");
     DOMWeekday.textContent = day.weekday;
@@ -274,7 +292,13 @@ function displayForecastDays(days) {
 
     daysHoursContainer.appendChild(DOMDayContainer);
   });
-  daysHoursContainer.dataset.selectedDayIndex = "0";
+  const DOMDays = [...daysHoursContainer.getElementsByClassName("day-hour")];
+  const selectedDOMDay = DOMDays.find(DOMDay => DOMDay.dataset.index == daysHoursContainer.dataset.selectedDayIndex)
+  selectedDOMDay.className = "day-hour selected";
+  selectedDOMDay.scrollIntoView({
+    behavior: "smooth",
+    inline: "center",
+  });
 }
 function processHours(hours) {
   const processedHours = [];
@@ -282,16 +306,36 @@ function processHours(hours) {
     const processedHour = {};
     processedHour.time = processTime(hour.datetime);
     processedHour.icon = hour.icon;
-    processedHour.temperature = `${hour.temp}°C`;
+    processedHour.temperature = `${hour.temp.toFixed(0)}°C`;
     processedHour.conditions = hour.conditions;
     processedHours.push(processedHour);
   });
   return processedHours;
 }
+function loadSelectedHour(elementIndex) {
+  if (daysHoursContainer.dataset.selectedHourIndex === elementIndex) return;
+  daysHoursContainer.dataset.selectedHourIndex = elementIndex;
+  const children = [...daysHoursContainer.children];
+  children.forEach((child) => {
+    if (child.dataset.index == elementIndex) {
+      child.className = "day-hour selected";
+    } else {
+      child.className = "day-hour";
+    }
+  });
+  displayForecast(
+    processData(
+      APIResponse,
+      daysHoursContainer.dataset.selectedDayIndex,
+      elementIndex
+    )
+  );
+}
 function displayForecastHours(hours) {
   daysHoursContainer.innerHTML = "";
-  hours.forEach((hour) => {
+  hours.forEach((hour, hourIndex) => {
     const DOMHourContainer = document.createElement("div");
+    DOMHourContainer.dataset.index = hourIndex;
     DOMHourContainer.dataset.conditions = hour.conditions;
     DOMHourContainer.title = hour.conditions;
     DOMHourContainer.className = "day-hour";
@@ -317,4 +361,19 @@ function displayForecastHours(hours) {
 
     daysHoursContainer.appendChild(DOMHourContainer);
   });
+  const DOMHours = [...daysHoursContainer.getElementsByClassName("day-hour")];
+  const currentDOMHour = DOMHours.find(
+    (DOMHour) =>
+      DOMHour.dataset.index == daysHoursContainer.dataset.selectedHourIndex
+  );
+  currentDOMHour.className = "day-hour selected";
+  currentDOMHour.scrollIntoView({ behavior: "smooth", inline: "center" });
+  DOMHours.forEach((DOMHour) => {
+    DOMHour.addEventListener("click", (event) => {
+      loadSelectedHour(event.currentTarget.dataset.index);
+    });
+  });
 }
+displayForecast(processData(APIResponse));
+displayDaysHours(APIResponse);
+window.addEventListener("DOMContentLoaded", init);
