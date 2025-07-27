@@ -1,32 +1,153 @@
 import "./styles.css";
-const unitToggle = document.getElementById("unit-toggle-container")
+
+const unitToggle = document.getElementById("unit-toggle-container");
+const celciusToggle = document.getElementById("celcius-toggle");
+const fahrenheitToggle = document.getElementById("fahrenheit-toggle");
 const DOMTime = document.getElementById("time");
 const DOMDay = document.getElementById("day");
 const DOMTemperature = document.getElementById("temperature");
 const DOMFeelslikeTemperature = document.getElementById("feelslike");
-const DOMDescription = document.getElementById('description')
-const DOMWeatherCondition = document.getElementById('weather-condition')
-const DOMDetailLocation = document.getElementById('detail-location')
-const DOMDetailDate = document.getElementById('detail-date')
-const DOMDetailHumidity = document.getElementById('detail-humidity')
-const DOMDetailUVIndex = document.getElementById('detail-uvindex')
-const DOMDetailPrecipitation = document.getElementById('detail-precipitation')
-const DOMDetailPressure = document.getElementById('detail-pressure')
-const DOMDetailWind = document.getElementById('detail-wind')
-const DOMDetailWindGust = document.getElementById('detail-windgust')
-const DOMDetailSunrise = document.getElementById('detail-sunrise')
-const DOMDetailSunset = document.getElementById('detail-sunset')
-const daysHoursToggle = document.getElementById('days-hours-toggle-container')
+const DOMDescription = document.getElementById("description");
+const DOMWeatherConditionIcon = document.getElementById("weather-icon");
+const DOMWeatherCondition = document.getElementById("weather-condition");
+const DOMDetailLocation = document.getElementById("detail-location");
+const DOMDetailDate = document.getElementById("detail-date");
+const DOMDetailHumidity = document.getElementById("detail-humidity");
+const DOMDetailUVIndex = document.getElementById("detail-uvindex");
+const DOMDetailPrecipitation = document.getElementById("detail-precipitation");
+const DOMDetailPressure = document.getElementById("detail-pressure");
+const DOMDetailWind = document.getElementById("detail-wind");
+const DOMDetailWindGust = document.getElementById("detail-windgust");
+const DOMDetailSunrise = document.getElementById("detail-sunrise");
+const DOMDetailSunset = document.getElementById("detail-sunset");
+const daysHoursToggle = document.getElementById("days-hours-toggle-container");
+const daysToggle = document.getElementById("days-toggle");
+const hoursToggle = document.getElementById("hours-toggle");
 
-function formatData(json) {
-  const keys = ["resolvedAddress", "description", "days", "currentConditions"];
-  let formattedData = {};
-  keys.forEach((key) => {
-    if (json.hasOwnProperty(key)) {
-      formattedData[key] = json[key];
-    }
-  });
-  return formattedData;
+celciusToggle.addEventListener("click", () => {
+  if (!(unitToggle.dataset.selected === "celcius")) {
+    unitToggle.dataset.selected = "celcius";
+    unitToggle.className = "celcius";
+    toggleCelcius();
+  }
+});
+fahrenheitToggle.addEventListener("click", () => {
+  if (!(unitToggle.dataset.selected === "fahrenheit")) {
+    unitToggle.dataset.selected = "fahrenheit";
+    unitToggle.className = "fahrenheit";
+    toggleFahrenheit();
+  }
+});
+daysToggle.addEventListener("click", () => {
+  daysHoursToggle.dataset.selected = "days";
+  daysHoursToggle.className = "days";
+});
+hoursToggle.addEventListener("click", () => {
+  daysHoursToggle.dataset.selected = "hours";
+  daysHoursToggle.className = "hours";
+});
+function processTime(time) {
+  let isPM = false;
+  const slicedTime = time.slice(0, 5);
+  const slicedSplitTime = slicedTime.split(":");
+  let hours = Number(slicedSplitTime[0]);
+  const minutes = slicedSplitTime[1];
+  if (hours > 12) {
+    hours = hours - 12;
+    isPM = true;
+  } else if (hours === 0) {
+    hours = 12;
+  }
+  return `${hours}:${minutes} ${isPM ? "PM" : "AM"}`;
+}
+function processWeekday(date) {
+  return new Date(date).toLocaleDateString("en-US", { weekday: "long" });
+}
+function processData(data, dayIndex = null, hourIndex = new Date().getHours()) {
+  const days = data.days;
+  let time,
+    weekday,
+    temperature,
+    feelslike,
+    description,
+    icon,
+    condition,
+    location,
+    date,
+    humidity,
+    uvindex,
+    precipitation,
+    pressure,
+    wind,
+    windgust,
+    sunrise,
+    sunset;
+  if (dayIndex != null && dayIndex >= 0 && dayIndex < data.days.length) {
+    // Get requested day's and/or hour's weather information
+    const day = days[dayIndex];
+    const hour = day.hours[hourIndex];
+    console.log(day)
+    console.log(hour)
+    time = processTime(hour.datetime);
+    weekday = processWeekday(day.datetime);
+    temperature = `${hour.temp}°C`;
+    feelslike = `Feels like ${hour.feelslike}°C`;
+    description = day.description;
+    icon = hour.icon;
+    condition = hour.conditions;
+    location = data.resolvedAddress;
+    date = day.datetime.replaceAll("-", "/");
+    humidity = `${hour.humidity}%`;
+    uvindex = hour.uvindex;
+    precipitation = `${hour.precipprob}%`;
+    pressure = `${hour.pressure} mb`;
+    wind = `${hour.windspeed} km/h`;
+    windgust = `${hour.windgust ? `${hour.windgust} km/h` : "--"}`;
+    sunrise = processTime(day.sunrise);
+    sunset = processTime(day.sunset);
+  } else {
+    // Get current weather information
+    const currentConditions = data.currentConditions;
+    time = processTime(currentConditions.datetime);
+    weekday = processWeekday(days[0].datetime);
+    temperature = `${currentConditions.temp}°C`;
+    feelslike = `Feels like ${currentConditions.feelslike}°C`;
+    description = days[0].description;
+    icon = currentConditions.icon;
+    condition = currentConditions.conditions;
+    location = data.resolvedAddress;
+    date = days[0].datetime.replaceAll("-", "/");
+    humidity = `${currentConditions.humidity}%`;
+    uvindex = currentConditions.uvindex;
+    precipitation = `${currentConditions.precipprob}%`;
+    pressure = `${currentConditions.pressure} mb`;
+    wind = `${currentConditions.windspeed} km/h`;
+    windgust = `${
+      currentConditions.windgust ? `${currentConditions.windgust} km/h` : "--"
+    }`;
+    sunrise = processTime(currentConditions.sunrise);
+    sunset = processTime(currentConditions.sunset);
+  }
+  const processedData = {
+    time,
+    weekday,
+    temperature,
+    feelslike,
+    description,
+    icon,
+    condition,
+    location,
+    date,
+    humidity,
+    uvindex,
+    precipitation,
+    pressure,
+    wind,
+    windgust,
+    sunrise,
+    sunset,
+  };
+  return processedData;
 }
 async function getWeather(location) {
   const response = await fetch(
@@ -35,64 +156,27 @@ async function getWeather(location) {
   const json = await response.json();
   return json;
 }
-function refreshDOM(data) {
-  const currentConditions = data.currentConditions
-  const days = data.days
-  const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  console.log(data)
-  // Time
-  let isPM = false;
-  let [hours, minutes] = currentConditions.datetime.slice(0, 5).split(":");
-  if (Number(hours) > 12) {
-    hours = Number(hours) - 12;
-    isPM = true;
-  }
-  DOMTime.textContent = `${hours}:${minutes} ${isPM ? "PM" : "AM"}`;
-
-  // Day
-  DOMDay.textContent = weekdayNames[new Date(days[0].datetime).getDay()]
-
-  // Temperature
-  DOMTemperature.textContent = `${currentConditions.temp}°C`
-
-  // Feelslike Temperature
-  DOMFeelslikeTemperature.textContent = `Feels like ${currentConditions.feelslike}°C`
-
-  // Today's Description
-  DOMDescription.textContent = days[0].description
-
-  // Condition
-  DOMWeatherCondition.textContent = currentConditions.conditions
-
-  // Location
-  DOMDetailLocation.textContent = data.resolvedAddress
-
-  // Date
-  DOMDetailDate.textContent = days[0].datetime.replaceAll('-','/')
-
-  // Humidity
-  DOMDetailHumidity.textContent = `${currentConditions.humidity}%`
-
-  // UVIndex
-  DOMDetailUVIndex.textContent = currentConditions.uvindex
-
-  // Precipitation
-  DOMDetailPrecipitation.textContent = `${currentConditions.precipprob}%`
-
-  // Pressure
-  DOMDetailPressure.textContent = `${currentConditions.pressure}%`
-
-  // Wind
-  DOMDetailWind.textContent = `${currentConditions.windspeed} km/h`
-
-  // Wind Gust
-  DOMDetailWindGust.textContent = `${currentConditions.windgust?currentConditions.windgust:"--"} km/h`
-
-  // Sunset
-  DOMDetailSunrise.textContent = `${currentConditions.sunrise.slice(0,5).replace("0","")} AM`
-
-  // Sunset
-  let [sunsetHours, sunsetMinutes] = currentConditions.sunset.slice(0,5).split(":")
-  DOMDetailSunset.textContent = `${Number(sunsetHours)-12}:${sunsetMinutes} PM`
+function displayForecast(data) {
+  console.table(data);
+  console.log(tempResponse);
+  DOMTime.textContent = data.time;
+  DOMDay.textContent = data.weekday;
+  DOMTemperature.textContent = data.temperature;
+  DOMFeelslikeTemperature.textContent = data.feelslike;
+  DOMDescription.textContent = data.description;
+  import("./weather-icons.js").then((module) => {
+    const icon = module[`icon0${data.icon.split("-").join("0")}`];
+    DOMWeatherConditionIcon.src = icon;
+  });
+  DOMWeatherCondition.textContent = data.condition;
+  DOMDetailLocation.textContent = data.location;
+  DOMDetailDate.textContent = data.date;
+  DOMDetailHumidity.textContent = data.humidity;
+  DOMDetailUVIndex.textContent = data.uvindex;
+  DOMDetailPrecipitation.textContent = data.precipitation;
+  DOMDetailPressure.textContent = data.pressure;
+  DOMDetailWind.textContent = data.wind;
+  DOMDetailWindGust.textContent = data.windgust;
+  DOMDetailSunrise.textContent = data.sunrise;
+  DOMDetailSunset.textContent = data.sunset;
 }
-refreshDOM(tempResponse);

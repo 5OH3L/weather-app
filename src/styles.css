@@ -275,11 +275,12 @@ body.night #erase-button > .icon {
   grid-template-columns: repeat(2, 1fr);
   justify-items: flex-start;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   flex: 1;
 }
 #details-container > .detail-section:not(:first-child) > * {
-  margin-left: 2rem;
+  margin-left: 1rem;
+  white-space: nowrap;
 }
 #details-container > :first-child {
   letter-spacing: 0.1rem;
