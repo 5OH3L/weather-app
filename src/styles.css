@@ -11,14 +11,15 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background-position: center;
   background-size: cover;
-  background-image: url("./images/backgrounds/background-day.jpg");
+  background-image: url("./images/backgrounds/background-night.jpg");
   --search-background-color: rgba(255, 255, 255, 0.1);
   --serach-padding: 0.8rem 3.5rem;
-  --serach-border: 0.12rem solid rgba(0, 0, 0, 0.5);
-  --section-border: 0.15rem solid black;
-  --text-color: black;
+  --serach-border: 0.12rem solid rgba(255, 255, 255, 0.5);
+  --section-border: 0.15rem solid rgba(255, 255, 255, 0.8);
+  --text-color: white;
+  --days-hours-scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
   --section-backdrop-filter: blur(0.8rem);
-  --days-hours-scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+  --section-background-color: rgba(255, 255, 255, 0.1);
 }
 body::before {
   position: fixed;
@@ -30,12 +31,13 @@ body::before {
   backdrop-filter: blur(0.1rem);
   z-index: -1;
 }
-body.night {
-  background-image: url("./images/backgrounds/background-night.jpg");
-  --serach-border: 0.12rem solid rgba(255, 255, 255, 0.5);
-  --section-border: 0.15rem solid rgba(255, 255, 255, 0.8);
-  --text-color: white;
-  --days-hours-scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+body.day {
+  background-image: url("./images/backgrounds/background-day.jpg");
+  --section-background-color: rgba(0, 0, 0, 0.05);
+  --text-color: black;
+  --serach-border: 0.12rem solid rgba(0, 0, 0, 0.5);
+  --section-border: 0.15rem solid rgba(0, 0, 0, 0.8);
+  --days-hours-scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
 }
 #content {
   height: 100%;
@@ -78,7 +80,6 @@ body.night {
 #search-container {
   flex: 1.5;
   position: relative;
-  backdrop-filter: var(--section-backdrop-filter);
   --side-padding: 4%;
 }
 #search-button,
@@ -98,8 +99,8 @@ body.night {
   height: 100%;
   width: 100%;
 }
-body.night #search-button > .icon,
-body.night #erase-button > .icon {
+body.day #search-button > .icon,
+body.day #erase-button > .icon {
   filter: invert(1);
 }
 #search-button {
@@ -117,6 +118,7 @@ body.night #erase-button > .icon {
   background-color: var(--search-background-color);
   border-radius: 2rem;
   padding: var(--serach-padding);
+  backdrop-filter: var(--section-backdrop-filter);
   font-size: 1.5rem;
 }
 #unit-toggle-container {
@@ -181,6 +183,7 @@ body.night #erase-button > .icon {
   border-radius: 0.4rem;
   color: var(--text-color);
   backdrop-filter: var(--section-backdrop-filter);
+  background-color: var(--section-background-color);
 }
 #forecast-container > #time-day-container {
   flex: 1;
@@ -258,6 +261,7 @@ body.night #erase-button > .icon {
   white-space: nowrap;
 }
 #days-hours-container {
+  background-color: var(--section-background-color);
   flex: 1;
 }
 #details-container {
@@ -270,6 +274,7 @@ body.night #erase-button > .icon {
   border: var(--section-border);
   color: var(--text-color);
   backdrop-filter: var(--section-backdrop-filter);
+  background-color: var(--section-background-color);
 }
 #details-container > .detail-section:not(:first-child) {
   display: grid;
@@ -305,9 +310,6 @@ body.night #erase-button > .icon {
   pointer-events: none;
   height: var(--size);
   width: var(--size);
-}
-body.night .detail-icon.night {
-  filter: invert(1);
 }
 #days-hours-container {
   display: flex;
@@ -387,6 +389,11 @@ body.night .detail-icon.night {
   box-shadow: 0 0 0.5rem 0.05rem rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.5);
+}
+body.day #days-hours-container > #days-hours > .day-hour.selected {
+  box-shadow: 0 0 0.5rem 0.05rem rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.5);
 }
 #days-hours-container > #days-hours > .day-hour > .weekday-daytime {
   font-size: 1.4rem;

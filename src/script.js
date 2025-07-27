@@ -28,11 +28,6 @@ const daysToggle = document.getElementById("days-toggle");
 const hoursToggle = document.getElementById("hours-toggle");
 const daysHoursContainer = document.getElementById("days-hours");
 
-function init() {
-  daysHoursContainer.dataset.selectedHourIndex =
-    APIResponse.currentConditions.datetime.slice(0, 2);
-}
-
 let APIResponse = null;
 
 search.addEventListener("keydown", (e) => {
@@ -377,14 +372,13 @@ function displayForecastHours(hours) {
     (DOMHour) =>
       DOMHour.dataset.index == daysHoursContainer.dataset.selectedHourIndex
   );
-  currentDOMHour.className = "day-hour selected";
-  currentDOMHour.scrollIntoView({ behavior: "smooth", inline: "center" });
+  if (currentDOMHour) {
+    currentDOMHour.className = "day-hour selected";
+    currentDOMHour.scrollIntoView({ behavior: "smooth", inline: "center" });
+  }
   DOMHours.forEach((DOMHour) => {
     DOMHour.addEventListener("click", (event) => {
       loadSelectedHour(event.currentTarget.dataset.index);
     });
   });
 }
-displayForecast(processData(APIResponse));
-displayDaysHours(APIResponse);
-window.addEventListener("DOMContentLoaded", init);
