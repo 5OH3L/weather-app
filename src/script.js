@@ -29,7 +29,8 @@ const hoursToggle = document.getElementById("hours-toggle");
 const daysHoursContainer = document.getElementById("days-hours");
 
 function init() {
-  daysHoursContainer.dataset.selectedHourIndex = APIResponse.currentConditions.datetime.slice(0,2);
+  daysHoursContainer.dataset.selectedHourIndex =
+    APIResponse.currentConditions.datetime.slice(0, 2);
 }
 
 let APIResponse = null;
@@ -66,6 +67,7 @@ function searchWeather() {
       displayDaysHours(response);
       APIResponse = response;
     });
+    search.value = "";
   }
 }
 
@@ -257,7 +259,13 @@ function loadSelectedDay(elementIndex) {
       child.className = "day-hour";
     }
   });
-  displayForecast(processData(APIResponse, elementIndex, daysHoursContainer.dataset.selectedHourIndex));
+  displayForecast(
+    processData(
+      APIResponse,
+      elementIndex,
+      daysHoursContainer.dataset.selectedHourIndex
+    )
+  );
 }
 function displayForecastDays(days) {
   daysHoursContainer.innerHTML = "";
@@ -293,7 +301,10 @@ function displayForecastDays(days) {
     daysHoursContainer.appendChild(DOMDayContainer);
   });
   const DOMDays = [...daysHoursContainer.getElementsByClassName("day-hour")];
-  const selectedDOMDay = DOMDays.find(DOMDay => DOMDay.dataset.index == daysHoursContainer.dataset.selectedDayIndex)
+  const selectedDOMDay = DOMDays.find(
+    (DOMDay) =>
+      DOMDay.dataset.index == daysHoursContainer.dataset.selectedDayIndex
+  );
   selectedDOMDay.className = "day-hour selected";
   selectedDOMDay.scrollIntoView({
     behavior: "smooth",
