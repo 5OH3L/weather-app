@@ -1,5 +1,6 @@
 import "./styles.css";
 
+const websiteIcon = document.getElementById("website-icon");
 const search = document.getElementById("search");
 const searchButton = document.getElementById("search-button");
 const eraseButton = document.getElementById("erase-button");
@@ -27,6 +28,14 @@ const daysHoursToggle = document.getElementById("days-hours-toggle-container");
 const daysToggle = document.getElementById("days-toggle");
 const hoursToggle = document.getElementById("hours-toggle");
 const daysHoursContainer = document.getElementById("days-hours");
+websiteIcon.addEventListener("click", () => {
+  if (document.body.classList.contains("day")) {
+    document.body.removeAttribute("class");
+  } else {
+    document.body.setAttribute("class", "day");
+  }
+});
+websiteIcon.ondragstart = (e) => false;
 
 let APIResponse = null;
 

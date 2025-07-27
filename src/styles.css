@@ -72,7 +72,7 @@ body.day {
   height: 3.4rem;
   aspect-ratio: 1/1;
   cursor: pointer;
-  pointer-events: none;
+  pointer-events: all;
 }
 #website-icon ~ h1 {
   color: #96d0f7;
