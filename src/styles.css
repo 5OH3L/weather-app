@@ -121,6 +121,11 @@ body.day #erase-button > .icon {
   backdrop-filter: var(--section-backdrop-filter);
   font-size: 1.5rem;
 }
+#search::placeholder{
+  color: var(--text-color);
+  font-size: 1.2rem;
+  opacity: 0.5;
+}
 #unit-toggle-container {
   display: flex;
   justify-content: flex-end;

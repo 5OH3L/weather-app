@@ -68,6 +68,7 @@ function displayDaysHours(response) {
 function searchWeather() {
   if (search.value.trim() !== "" || search.value.trim() !== null) {
     getWeather(search.value).then((response) => {
+      daysHoursContainer.dataset.selectedDayIndex = "0";
       displayForecast(processData(response));
       displayDaysHours(response);
       APIResponse = response;
@@ -396,3 +397,13 @@ function displayForecastHours(hours) {
     });
   });
 }
+function loadInitialPage() {
+  const days = [...daysHoursContainer.children];
+  days.forEach((day) => {
+    day.addEventListener("click", () => {
+      days.map((day) => (day.className = "day-hour"));
+      day.className = "day-hour selected";
+    });
+  });
+}
+window.addEventListener("DOMContentLoaded", loadInitialPage);
