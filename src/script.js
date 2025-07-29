@@ -4,8 +4,12 @@ const websiteIcon = document.getElementById("website-icon");
 const search = document.getElementById("search");
 const searchButton = document.getElementById("search-button");
 const eraseButton = document.getElementById("erase-button");
-const unitToggleContainer = document.getElementById('unit-toggle-container')
-const toggleMenu = document.getElementById('toggle-menu')
+const unitToggleContainer = document.getElementById("unit-toggle-container");
+const toggleMenu = document.getElementById("toggle-menu");
+const celciusToggle = document.getElementById("toggle-temperature-celcius");
+const fahrenheitToggle = document.getElementById(
+  "toggle-temperature-fahrenheit"
+);
 const DOMTime = document.getElementById("time");
 const DOMDay = document.getElementById("day");
 const DOMTemperature = document.getElementById("temperature");
@@ -29,9 +33,49 @@ const daysToggle = document.getElementById("days-toggle");
 const hoursToggle = document.getElementById("hours-toggle");
 const daysHoursContainer = document.getElementById("days-hours");
 
-toggleMenu.addEventListener('click', ()=>{
-  unitToggleContainer.classList.toggle('visible')
-})
+celciusToggle.addEventListener("click", () => {
+  if (!celciusToggle.classList.contains("selected")) {
+    celciusToggle.classList.add("selected");
+    fahrenheitToggle.classList.remove("selected");
+    displayCelcius();
+  }
+});
+fahrenheitToggle.addEventListener("click", () => {
+  if (!fahrenheitToggle.classList.contains("selected")) {
+    fahrenheitToggle.classList.add("selected");
+    celciusToggle.classList.remove("selected");
+    displayFahrenheit();
+  }
+});
+function displayCelcius() {
+  unitToggleContainer.dataset.temperature = "celcius";
+  if (!DOMTemperature.dataset.celcius) return;
+  DOMTemperature.textContent = `${DOMTemperature.dataset.celcius}°C`;
+  DOMFeelslikeTemperature.textContent = `Feels like ${DOMFeelslikeTemperature.dataset.celcius}°C`;
+  const daysHours = [...daysHoursContainer.children];
+  daysHours.forEach((dayHour) => {
+    const dayHourTemperature = dayHour.getElementsByClassName(
+      "weekday-daytime-temperature"
+    )[0];
+    dayHourTemperature.textContent = `${dayHour.dataset.celcius}°C`;
+  });
+}
+function displayFahrenheit() {
+  unitToggleContainer.dataset.temperature = "fahrenheit";
+  if (!DOMTemperature.dataset.fahrenheit) return;
+  DOMTemperature.textContent = `${DOMTemperature.dataset.fahrenheit}°F`;
+  DOMFeelslikeTemperature.textContent = `Feels like ${DOMFeelslikeTemperature.dataset.fahrenheit}°F`;
+  const daysHours = [...daysHoursContainer.children];
+  daysHours.forEach((dayHour) => {
+    const dayHourTemperature = dayHour.getElementsByClassName(
+      "weekday-daytime-temperature"
+    )[0];
+    dayHourTemperature.textContent = `${dayHour.dataset.fahrenheit}°F`;
+  });
+}
+toggleMenu.addEventListener("click", () => {
+  unitToggleContainer.classList.toggle("visible");
+});
 websiteIcon.addEventListener("click", () => {
   if (document.body.classList.contains("day")) {
     document.body.removeAttribute("class");
@@ -97,6 +141,10 @@ hoursToggle.addEventListener("click", () => {
     displayDaysHours(APIResponse, APIResponse.currentConditions);
   }
 });
+
+function convertToFahrenheit(celcius) {
+  return (celcius * 9) / 5 + 32;
+}
 function processTime(time) {
   let isPM = false;
   const slicedTime = time.slice(0, 5);
@@ -119,8 +167,10 @@ function processData(data, dayIndex = null) {
   const hourIndex = daysHoursContainer.dataset.selectedHourIndex;
   let time,
     weekday,
-    temperature,
-    feelslike,
+    temperatureCelcius,
+    temperatureFahrenheit,
+    feelslikeCelcius,
+    feelslikeFahrenheit,
     description,
     icon,
     condition,
@@ -145,8 +195,10 @@ function processData(data, dayIndex = null) {
     }
     time = processTime(hour.datetime);
     weekday = processWeekday(day.datetime);
-    temperature = `${hour.temp.toFixed(0)}°C`;
-    feelslike = `Feels like ${hour.feelslike.toFixed(0)}°C`;
+    temperatureCelcius = hour.temp.toFixed(0);
+    temperatureFahrenheit = convertToFahrenheit(hour.temp).toFixed(0);
+    feelslikeCelcius = hour.feelslike.toFixed(0);
+    feelslikeFahrenheit = convertToFahrenheit(hour.feelslike).toFixed(0);
     description = day.description;
     icon = hour.icon;
     condition = hour.conditions;
@@ -179,8 +231,14 @@ function processData(data, dayIndex = null) {
     }
     time = processTime(currentConditions.datetime);
     weekday = processWeekday(days[0].datetime);
-    temperature = `${currentConditions.temp.toFixed(0)}°C`;
-    feelslike = `Feels like ${currentConditions.feelslike.toFixed(0)}°C`;
+    temperatureCelcius = currentConditions.temp.toFixed(0);
+    temperatureFahrenheit = convertToFahrenheit(currentConditions.temp).toFixed(
+      0
+    );
+    feelslikeCelcius = currentConditions.feelslike.toFixed(0);
+    feelslikeFahrenheit = convertToFahrenheit(
+      currentConditions.feelslike
+    ).toFixed(0);
     description = days[0].description;
     icon = currentConditions.icon;
     condition = currentConditions.conditions;
@@ -200,8 +258,10 @@ function processData(data, dayIndex = null) {
   const processedData = {
     time,
     weekday,
-    temperature,
-    feelslike,
+    temperatureCelcius,
+    temperatureFahrenheit,
+    feelslikeCelcius,
+    feelslikeFahrenheit,
     description,
     icon,
     condition,
@@ -232,8 +292,17 @@ function displayForecast(data) {
     DOMDetailIconDate.src =
       module[`icon0weekday0${data.weekday.toLowerCase()}`];
   });
-  DOMTemperature.textContent = data.temperature;
-  DOMFeelslikeTemperature.textContent = data.feelslike;
+  DOMTemperature.dataset.celcius = data.temperatureCelcius;
+  DOMTemperature.dataset.fahrenheit = data.temperatureFahrenheit;
+  if (unitToggleContainer.dataset.temperature == "fahrenheit") {
+    DOMTemperature.textContent = `${data.temperatureFahrenheit}°F`;
+    DOMFeelslikeTemperature.textContent = `Feels like ${data.feelslikeFahrenheit}°F`;
+  } else {
+    DOMTemperature.textContent = `${data.temperatureCelcius}°C`;
+    DOMFeelslikeTemperature.textContent = `Feels like ${data.feelslikeCelcius}°C`;
+  }
+  DOMFeelslikeTemperature.dataset.celcius = data.feelslikeCelcius;
+  DOMFeelslikeTemperature.dataset.fahrenheit = data.feelslikeFahrenheit;
   DOMDescription.textContent = data.description;
   import("./weather-icons.js").then((module) => {
     const icon = module[`icon0${data.icon.split("-").join("0")}`];
@@ -262,7 +331,10 @@ function processDays(days) {
         ? "Today"
         : weekday;
     processedDay.icon = day.icon;
-    processedDay.temperature = `${day.temp.toFixed(0)}°C`;
+    processedDay.temperatureCelcius = day.temp.toFixed(0);
+    processedDay.temperatureFahrenheit = convertToFahrenheit(day.temp).toFixed(
+      0
+    );
     processedDay.conditions = day.conditions;
     processedDays.push(processedDay);
   });
@@ -295,6 +367,8 @@ function displayForecastDays(days) {
     const DOMDayContainer = document.createElement("div");
     DOMDayContainer.dataset.index = dayIndex;
     DOMDayContainer.dataset.conditions = day.conditions;
+    DOMDayContainer.dataset.celcius = day.temperatureCelcius;
+    DOMDayContainer.dataset.fahrenheit = day.temperatureFahrenheit;
     DOMDayContainer.title = day.conditions;
     DOMDayContainer.className = "day-hour";
     DOMDayContainer.addEventListener("click", (event) => {
@@ -316,7 +390,11 @@ function displayForecastDays(days) {
     DOMDayContainer.appendChild(DOMIcon);
 
     const DOMDayTemperature = document.createElement("p");
-    DOMDayTemperature.textContent = day.temperature;
+    if (unitToggleContainer.dataset.temperature == "fahrenheit") {
+      DOMDayTemperature.textContent = `${day.temperatureFahrenheit}°F`;
+    } else {
+      DOMDayTemperature.textContent = `${day.temperatureCelcius}°C`;
+    }
     DOMDayTemperature.className = "weekday-daytime-temperature";
     DOMDayContainer.appendChild(DOMDayTemperature);
 
@@ -340,7 +418,10 @@ function processHours(hours, currentHour) {
     processedHour.fulltime = hour.datetime;
     processedHour.time = processTime(hour.datetime);
     processedHour.icon = hour.icon;
-    processedHour.temperature = `${hour.temp.toFixed(0)}°C`;
+    processedHour.temperatureCelcius = hour.temp.toFixed(0);
+    processedHour.temperatureFahrenheit = convertToFahrenheit(
+      hour.temp
+    ).toFixed(0);
     processedHour.conditions = hour.conditions;
     processedHours.push(processedHour);
   });
@@ -354,7 +435,10 @@ function processHours(hours, currentHour) {
     processedCurrentHour.fulltime = currentHour.datetime;
     processedCurrentHour.time = processTime(currentHour.datetime);
     processedCurrentHour.icon = currentHour.icon;
-    processedCurrentHour.temperature = `${currentHour.temp.toFixed(0)}°C`;
+    processedCurrentHour.temperatureCelcius = currentHour.temp.toFixed(0);
+    processedCurrentHour.temperatureFahrenheit = convertToFahrenheit(
+      currentHour.temp
+    ).toFixed(0);
     processedCurrentHour.conditions = currentHour.conditions;
     processedCurrentHour.currentForecast = true;
     const insertingIndex = processedHours.findIndex(
@@ -401,6 +485,8 @@ function displayForecastHours(hours) {
     } else {
       DOMHourContainer.dataset.index = hourIndex;
     }
+    DOMHourContainer.dataset.celcius = hour.temperatureCelcius;
+    DOMHourContainer.dataset.fahrenheit = hour.temperatureFahrenheit;
     DOMHourContainer.dataset.conditions = hour.conditions;
     DOMHourContainer.title = hour.conditions;
     DOMHourContainer.className = "day-hour";
@@ -420,7 +506,11 @@ function displayForecastHours(hours) {
     DOMHourContainer.appendChild(DOMIcon);
 
     const DOMHourTemperature = document.createElement("p");
-    DOMHourTemperature.textContent = hour.temperature;
+    if (unitToggleContainer.dataset.temperature == "fahrenheit") {
+      DOMHourTemperature.textContent = `${hour.temperatureFahrenheit}°F`;
+    } else {
+      DOMHourTemperature.textContent = `${hour.temperatureCelcius}°C`;
+    }
     DOMHourTemperature.className = "weekday-daytime-temperature";
     DOMHourContainer.appendChild(DOMHourTemperature);
 
