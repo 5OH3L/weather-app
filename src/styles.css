@@ -86,8 +86,13 @@ body.day {
   cursor: pointer;
   pointer-events: all;
 }
-#website-icon ~ h1 {
+#website-icon ~ h1 > a{
+  text-decoration: none;
   color: #96d0f7;
+  transition: color 0.3s ease;
+}
+#website-icon ~ h1 > a:hover{
+  color: #abddff;
 }
 #search-container {
   flex: 1.5;
