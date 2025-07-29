@@ -188,8 +188,7 @@ body.day #erase-button > .icon {
   z-index: 10;
   opacity: 0;
   --toggle-option-border: 2px solid rgba(255, 255, 255, 0.8);
-  transition: height 0.5s ease, opacity 0.5s ease, padding 0.5s ease,
-    border 0.5s ease, background-color 0.5s ease, top 0.5s ease;
+  transition: height 0.5s ease, opacity 0.5s ease, padding 0.5s ease, border 0.5s ease, background-color 0.5s ease, top 0.5s ease;
 }
 #all-unit-toggles > .toggle-container {
   flex: 1;
@@ -218,22 +217,13 @@ body.day #erase-button > .icon {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-#all-unit-toggles
-  > .toggle-container
-  > .toggle-options
-  > .toggle-option:first-child {
+#all-unit-toggles > .toggle-container > .toggle-options > .toggle-option:first-child {
   border-right: 0.15rem solid rgba(255, 255, 255, 0.1);
 }
-#all-unit-toggles
-  > .toggle-container
-  > .toggle-options
-  > .toggle-option:last-child {
+#all-unit-toggles > .toggle-container > .toggle-options > .toggle-option:last-child {
   border-left: none;
 }
-#all-unit-toggles
-  > .toggle-container
-  > .toggle-options
-  > .toggle-option.selected {
+#all-unit-toggles > .toggle-container > .toggle-options > .toggle-option.selected {
   background-color: rgba(255, 255, 255, 0.2);
 }
 #main {
@@ -428,8 +418,7 @@ body.day #erase-button > .icon {
   border-top: none;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease,
-    border-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 #days-hours-toggle-container.days #days-toggle,
 #days-hours-toggle-container.hours #hours-toggle {
