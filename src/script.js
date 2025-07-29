@@ -549,7 +549,7 @@ function processHours(hours, currentHour) {
     processedCurrentHour.conditions = currentHour.conditions;
     processedCurrentHour.currentForecast = true;
     const insertingIndex = processedHours.findIndex(
-      (hour) => hour.fulltime.slice(0, 5).split(":")[0] == processedCurrentHour.fulltime.slice(0, 5).split(":")[0]
+      (hour) => hour.time.slice(0, 5).split(":")[0] == processedCurrentHour.time.slice(0, 5).split(":")[0]
     );
     processedHours.splice(insertingIndex + 1, 0, processedCurrentHour);
   } else {
