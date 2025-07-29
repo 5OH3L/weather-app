@@ -575,12 +575,14 @@ function loadSelectedHour(elementIndex) {
 }
 function displayForecastHours(hours) {
   daysHoursContainer.innerHTML = "";
+  let currentForecastAdded = false;
   hours.forEach((hour, hourIndex) => {
     const DOMHourContainer = document.createElement("div");
     if (hour.currentForecast) {
       DOMHourContainer.dataset.index = -1;
+      currentForecastAdded = true;
     } else {
-      DOMHourContainer.dataset.index = hourIndex;
+      DOMHourContainer.dataset.index = currentForecastAdded ? hourIndex - 1 : hourIndex;
     }
     DOMHourContainer.dataset.celcius = hour.temperatureCelcius;
     DOMHourContainer.dataset.fahrenheit = hour.temperatureFahrenheit;
