@@ -22,6 +22,10 @@ body {
   --section-backdrop-filter: blur(0.8rem);
   --section-background-color: rgba(255, 255, 255, 0.1);
   --section-overflow: hidden;
+  --button-background-color: rgba(255, 255, 255, 0.15);
+  --button-hover-background-color: rgba(255, 255, 255, 0.1);
+  --button-active-background-color: rgba(255, 255, 255, 0.2);
+  --toggle-option-border: 2px solid rgba(255, 255, 255, 0.8);
 }
 body::before {
   position: fixed;
@@ -40,6 +44,10 @@ body.day {
   --serach-border: 0.12rem solid rgba(0, 0, 0, 0.5);
   --section-border: 0.15rem solid rgba(0, 0, 0, 0.8);
   --days-hours-scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+  --button-background-color: rgba(0, 0, 0, 0.15);
+  --button-hover-background-color: rgba(0, 0, 0, 0.1);
+  --button-active-background-color: rgba(0, 0, 0, 0.2);
+  --toggle-option-border: 2px solid rgba(0, 0, 0, 0.8);
 }
 #content {
   height: 100%;
@@ -146,15 +154,24 @@ body.day #erase-button > .icon {
   height: var(--toggle-menu-height);
   width: var(--toggle-menu-width);
   border: var(--section-border);
-  background-color: var(--section-background-color);
   padding: 1rem;
   border-radius: 100%;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#toggle-menu:hover {
+  background-color: var(--button-hover-background-color);
+}
+#toggle-menu:active {
+  background-color: var(--button-active-background-color);
 }
 #toggle-menu > .icon {
   height: 100%;
   width: 100%;
   aspect-ratio: 1/1;
+}
+body.day #toggle-menu > .icon {
+  filter: invert(1);
 }
 #all-unit-toggles-wrapper {
   position: absolute;
@@ -187,7 +204,6 @@ body.day #erase-button > .icon {
   gap: 0.5rem;
   z-index: 10;
   opacity: 0;
-  --toggle-option-border: 2px solid rgba(255, 255, 255, 0.8);
   transition: height 0.5s ease, opacity 0.5s ease, padding 0.5s ease, border 0.5s ease, background-color 0.5s ease, top 0.5s ease;
 }
 #all-unit-toggles > .toggle-container {
@@ -215,7 +231,13 @@ body.day #erase-button > .icon {
   padding: 0.5rem 1rem;
   pointer-events: all;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, border 0.3s ease;
+}
+#all-unit-toggles > .toggle-container > .toggle-options > .toggle-option:hover {
+  background-color: var(--button-hover-background-color);
+}
+#all-unit-toggles > .toggle-container > .toggle-options > .toggle-option:active {
+  background-color: var(--button-active-background-color);
 }
 #all-unit-toggles > .toggle-container > .toggle-options > .toggle-option:first-child {
   border-right: 0.15rem solid rgba(255, 255, 255, 0.1);
@@ -224,7 +246,7 @@ body.day #erase-button > .icon {
   border-left: none;
 }
 #all-unit-toggles > .toggle-container > .toggle-options > .toggle-option.selected {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--button-background-color);
 }
 #main {
   flex: 1;
@@ -420,9 +442,17 @@ body.day #erase-button > .icon {
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+#days-toggle:hover,
+#hours-toggle:hover{
+  background-color: var(--button-hover-background-color);
+}
+#days-toggle:active,
+#hours-toggle:active{
+  background-color: var(--button-active-background-color);
+}
 #days-hours-toggle-container.days #days-toggle,
 #days-hours-toggle-container.hours #hours-toggle {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--button-background-color);
 }
 #days-toggle {
   border-right: none;
@@ -457,6 +487,9 @@ body.day #erase-button > .icon {
   pointer-events: all;
   cursor: pointer;
   transition: box-shadow 0.3s ease, background-color 0.3s ease, border 0.3s ease;
+}
+#days-hours-container > #days-hours > .day-hour:hover{
+  background-color: var(--button-hover-background-color);
 }
 #days-hours-container > #days-hours > .day-hour.selected {
   box-shadow: 0 0 0.5rem 0.05rem rgba(255, 255, 255, 0.5);
