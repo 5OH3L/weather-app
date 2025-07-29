@@ -212,6 +212,7 @@ function searchWeather() {
       displayForecast(processData(response));
       displayDaysHours(response, response.currentConditions);
       APIResponse = response;
+      localStorage.setItem("APIResponse", JSON.stringify(response));
     });
     search.value = "";
   }
@@ -641,5 +642,11 @@ function loadInitialPage() {
       day.className = "day-hour selected";
     });
   });
+  const storedAPIResponse = JSON.parse(localStorage.getItem("APIResponse"));
+  if (storedAPIResponse) {
+    displayForecast(processData(storedAPIResponse))
+    displayForecastDays(processDays(storedAPIResponse.days))
+    APIResponse = storedAPIResponse;
+  }
 }
 window.addEventListener("DOMContentLoaded", loadInitialPage);
