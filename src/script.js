@@ -225,8 +225,12 @@ function searchWeather() {
       .then((response) => {
         if (Number(response) == 400) {
           showMessage("Invalid Request", "The request you made was invalid. Please ensure the information is correct and try again.", "OK");
+        } else if (Number(response) == 401) {
+          showMessage("Unauthorized Request", "The API key used to send request is not valid.", "Dismiss");
         } else if (Number(response) == 429) {
           showMessage("Query limit exceeded", "Query limit of 1000 exceeded for today. Please try again tomorrow.", "Dismiss");
+        } else if (Number(response) == 500) {
+          showMessage("Server Error", "The server encountered an error, could not get requested query.", "Dismiss");
         } else {
           daysHoursContainer.dataset.selectedDayIndex = 0;
           daysHoursContainer.dataset.selectedHourIndex = -1;
