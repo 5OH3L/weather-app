@@ -10,6 +10,8 @@ const celciusToggle = document.getElementById("toggle-temperature-celcius");
 const fahrenheitToggle = document.getElementById("toggle-temperature-fahrenheit");
 const kmphToggle = document.getElementById("toggle-speed-kmph");
 const mphToggle = document.getElementById("toggle-speed-mph");
+const twelveHour = document.getElementById("toggle-time-twelve");
+const twentyFourHour = document.getElementById("toggle-time-twenty-four");
 const DOMTime = document.getElementById("time");
 const DOMDay = document.getElementById("day");
 const DOMTemperature = document.getElementById("temperature");
@@ -94,20 +96,80 @@ mphToggle.addEventListener("click", () => {
 });
 function displayKmph() {
   unitToggleContainer.dataset.speed = "kmph";
-  if (DOMDetailWind.dataset.kmph && DOMDetailWind.dataset.kmph != 'null') {
+  if (DOMDetailWind.dataset.kmph && DOMDetailWind.dataset.kmph != "null") {
     DOMDetailWind.textContent = `${DOMDetailWind.dataset.kmph} km/h`;
   }
-  if (DOMDetailWindGust.dataset.kmph && DOMDetailWindGust.dataset.kmph != 'null') {
+  if (DOMDetailWindGust.dataset.kmph && DOMDetailWindGust.dataset.kmph != "null") {
     DOMDetailWindGust.textContent = `${DOMDetailWindGust.dataset.kmph} km/h`;
   }
 }
 function displayMph() {
   unitToggleContainer.dataset.speed = "mph";
-  if (DOMDetailWind.dataset.mph && DOMDetailWind.dataset.mph != 'null') {
+  if (DOMDetailWind.dataset.mph && DOMDetailWind.dataset.mph != "null") {
     DOMDetailWind.textContent = `${DOMDetailWind.dataset.mph} mph`;
   }
-  if (DOMDetailWindGust.dataset.mph && DOMDetailWindGust.dataset.mph != 'null') {
+  if (DOMDetailWindGust.dataset.mph && DOMDetailWindGust.dataset.mph != "null") {
     DOMDetailWindGust.textContent = `${DOMDetailWindGust.dataset.mph} mph`;
+  }
+}
+twelveHour.addEventListener("click", () => {
+  if (!twelveHour.classList.contains("selected")) {
+    unitToggleContainer.dataset.time = "twelve-hour";
+    twelveHour.classList.add("selected");
+    twentyFourHour.classList.remove("selected");
+    displayTwelveHour();
+  }
+});
+twentyFourHour.addEventListener("click", () => {
+  if (!twentyFourHour.classList.contains("selected")) {
+    unitToggleContainer.dataset.time = "twenty-four-hour";
+    twentyFourHour.classList.add("selected");
+    twelveHour.classList.remove("selected");
+    displayTwentyFourHour();
+  }
+});
+function displayTwelveHour() {
+  // Change main displaying weather time format to 12-hour format
+  if (DOMTime.dataset.timeTwelveHour) {
+    DOMTime.textContent = DOMTime.dataset.timeTwelveHour;
+  }
+  // Change all of hours' section's time to 12-hour format
+  if (daysHoursToggle.dataset.selected == "hours") {
+    const hours = [...daysHoursContainer.children];
+    hours.forEach((hour) => {
+      if (hour.dataset.timeTwelveHour) {
+        hour.getElementsByClassName("weekday-daytime")[0].textContent = hour.dataset.timeTwelveHour;
+      }
+    });
+  }
+  // Change sunrise & sunset time format to 12-hour
+  if (DOMDetailSunrise.dataset.timeTwelveHour) {
+    DOMDetailSunrise.textContent = DOMDetailSunrise.dataset.timeTwelveHour;
+  }
+  if (DOMDetailSunset.dataset.timeTwelveHour) {
+    DOMDetailSunset.textContent = DOMDetailSunset.dataset.timeTwelveHour;
+  }
+}
+function displayTwentyFourHour() {
+  // Change main displaying weather time format to 24-hour format
+  if (DOMTime.dataset.timeTwentyFourHour) {
+    DOMTime.textContent = DOMTime.dataset.timeTwentyFourHour;
+  }
+  // Change all of hours' section's time to 24-hour format
+  if (daysHoursToggle.dataset.selected == "hours") {
+    const hours = [...daysHoursContainer.children];
+    hours.forEach((hour) => {
+      if (hour.dataset.timeTwentyFourHour) {
+        hour.getElementsByClassName("weekday-daytime")[0].textContent = hour.dataset.timeTwentyFourHour;
+      }
+    });
+  }
+  // Change sunrise & sunset time format to 24-hour
+  if (DOMDetailSunrise.dataset.timeTwentyFourHour) {
+    DOMDetailSunrise.textContent = DOMDetailSunrise.dataset.timeTwentyFourHour;
+  }
+  if (DOMDetailSunset.dataset.timeTwentyFourHour) {
+    DOMDetailSunset.textContent = DOMDetailSunset.dataset.timeTwentyFourHour;
   }
 }
 toggleMenu.addEventListener("click", () => {
@@ -235,7 +297,7 @@ function processData(data, dayIndex = null) {
     } else {
       hour = day.hours[Number(hourIndex)];
     }
-    time = processTime(hour.datetime);
+    time = hour.datetime;
     weekday = processWeekday(day.datetime);
     temperatureCelcius = hour.temp;
     temperatureFahrenheit = convertToFahrenheit(hour.temp);
@@ -259,8 +321,8 @@ function processData(data, dayIndex = null) {
       windgustkmph = null;
       windgustmph = null;
     }
-    sunrise = processTime(day.sunrise);
-    sunset = processTime(day.sunset);
+    sunrise = day.sunrise;
+    sunset = day.sunset;
   } else {
     // Get current weather information
     let currentConditions = data.currentConditions;
@@ -270,7 +332,7 @@ function processData(data, dayIndex = null) {
         (hour) => Number(hour.datetime.slice(0, 5).split(":")[0]) == Number(currentConditionsHoursMinutes[0])
       );
     }
-    time = processTime(currentConditions.datetime);
+    time = currentConditions.datetime;
     weekday = processWeekday(days[0].datetime);
     temperatureCelcius = currentConditions.temp;
     temperatureFahrenheit = convertToFahrenheit(currentConditions.temp);
@@ -294,8 +356,8 @@ function processData(data, dayIndex = null) {
       windgustkmph = null;
       windgustmph = null;
     }
-    sunrise = processTime(data.currentConditions.sunrise);
-    sunset = processTime(data.currentConditions.sunset);
+    sunrise = data.currentConditions.sunrise;
+    sunset = data.currentConditions.sunset;
   }
   const processedData = {
     time,
@@ -330,7 +392,13 @@ async function getWeather(location) {
   return json;
 }
 function displayForecast(data) {
-  DOMTime.textContent = data.time;
+  DOMTime.dataset.timeTwelveHour = processTime(data.time);
+  DOMTime.dataset.timeTwentyFourHour = data.time.slice(0, 5);
+  if (unitToggleContainer.dataset.time == "twenty-four-hour") {
+    DOMTime.textContent = data.time.slice(0, 5);
+  } else {
+    DOMTime.textContent = processTime(data.time);
+  }
   DOMDay.textContent = data.weekday;
   import("./weather-icons.js").then((module) => {
     DOMDetailIconDate.src = module[`icon0weekday0${data.weekday.toLowerCase()}`];
@@ -369,10 +437,18 @@ function displayForecast(data) {
     DOMDetailWind.textContent = `${data.windkmph} km/h`;
     DOMDetailWindGust.textContent = `${data.windgustkmph ? `${data.windgustkmph} km/h` : "--"}`;
   }
-  DOMDetailSunrise.textContent = data.sunrise;
-  DOMDetailSunset.textContent = data.sunset;
+  DOMDetailSunrise.dataset.timeTwelveHour = processTime(data.sunrise);
+  DOMDetailSunrise.dataset.timeTwentyFourHour = data.sunrise.slice(0, 5);
+  DOMDetailSunset.dataset.timeTwelveHour = processTime(data.sunset);
+  DOMDetailSunset.dataset.timeTwentyFourHour = data.sunset.slice(0, 5);
+  if (unitToggleContainer.dataset.time == "twenty-four-hour") {
+    DOMDetailSunrise.textContent = data.sunrise.slice(0, 5);
+    DOMDetailSunset.textContent = data.sunset.slice(0, 5);
+  } else {
+    DOMDetailSunrise.textContent = processTime(data.sunrise);
+    DOMDetailSunset.textContent = processTime(data.sunset);
+  }
 }
-// Fix Undefined temperature
 function processDays(days) {
   const processedDays = [];
   days.forEach((day) => {
@@ -456,8 +532,7 @@ function processHours(hours, currentHour) {
   const processedHours = [];
   hours.forEach((hour) => {
     const processedHour = {};
-    processedHour.fulltime = hour.datetime;
-    processedHour.time = processTime(hour.datetime);
+    processedHour.time = hour.datetime;
     processedHour.icon = hour.icon;
     processedHour.temperatureCelcius = hour.temp;
     processedHour.temperatureFahrenheit = convertToFahrenheit(hour.temp);
@@ -467,8 +542,7 @@ function processHours(hours, currentHour) {
   // If current time's minutes isn't 0 then add it to the hours list
   if (currentHour && Number(currentHour.datetime.slice(0, 5).split(":")[1]) != 0 && daysHoursContainer.dataset.selectedDayIndex == 0) {
     const processedCurrentHour = {};
-    processedCurrentHour.fulltime = currentHour.datetime;
-    processedCurrentHour.time = processTime(currentHour.datetime);
+    processedCurrentHour.time = currentHour.datetime;
     processedCurrentHour.icon = currentHour.icon;
     processedCurrentHour.temperatureCelcius = currentHour.temp;
     processedCurrentHour.temperatureFahrenheit = convertToFahrenheit(currentHour.temp);
@@ -480,7 +554,7 @@ function processHours(hours, currentHour) {
     processedHours.splice(insertingIndex + 1, 0, processedCurrentHour);
   } else {
     const currentForecastIndex = processedHours.findIndex(
-      (hour) => hour.fulltime.slice(0, 5).split(":")[0] == currentHour.datetime.slice(0, 5).split(":")[0]
+      (hour) => hour.time.slice(0, 5).split(":")[0] == currentHour.datetime.slice(0, 5).split(":")[0]
     );
     processedHours[currentForecastIndex].currentForecast = true;
   }
@@ -511,11 +585,17 @@ function displayForecastHours(hours) {
     DOMHourContainer.dataset.celcius = hour.temperatureCelcius;
     DOMHourContainer.dataset.fahrenheit = hour.temperatureFahrenheit;
     DOMHourContainer.dataset.conditions = hour.conditions;
+    DOMHourContainer.dataset.timeTwelveHour = processTime(hour.time);
+    DOMHourContainer.dataset.timeTwentyFourHour = hour.time.slice(0, 5);
     DOMHourContainer.title = hour.conditions;
     DOMHourContainer.className = "day-hour";
 
     const DOMTime = document.createElement("div");
-    DOMTime.textContent = hour.time;
+    if (unitToggleContainer.dataset.time == "twenty-four-hour") {
+      DOMTime.textContent = hour.time.slice(0, 5);
+    } else {
+      DOMTime.textContent = processTime(hour.time);
+    }
     DOMTime.className = "weekday-daytime";
     DOMHourContainer.appendChild(DOMTime);
 
