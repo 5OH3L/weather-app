@@ -78,6 +78,38 @@ function displayFahrenheit() {
     dayHourTemperature.textContent = `${dayHour.dataset.fahrenheit}°F`;
   });
 }
+kmphToggle.addEventListener("click", () => {
+  if (!kmphToggle.classList.contains("selected")) {
+    kmphToggle.classList.add("selected");
+    mphToggle.classList.remove("selected");
+    displayKmph();
+  }
+});
+mphToggle.addEventListener("click", () => {
+  if (!mphToggle.classList.contains("selected")) {
+    mphToggle.classList.add("selected");
+    kmphToggle.classList.remove("selected");
+    displayMph();
+  }
+});
+function displayKmph() {
+  unitToggleContainer.dataset.speed = "kmph";
+  if (DOMDetailWind.dataset.kmph) {
+    DOMDetailWind.textContent = `${DOMDetailWind.dataset.kmph} km/h`;
+  }
+  if (DOMDetailWindGust.dataset.kmph) {
+    DOMDetailWindGust.textContent = `${DOMDetailWindGust.dataset.kmph} km/h`;
+  }
+}
+function displayMph() {
+  unitToggleContainer.dataset.speed = "mph";
+  if (DOMDetailWind.dataset.mph) {
+    DOMDetailWind.textContent = `${DOMDetailWind.dataset.mph} mph`;
+  }
+  if (DOMDetailWindGust.dataset.mph) {
+    DOMDetailWindGust.textContent = `${DOMDetailWindGust.dataset.mph} mph`;
+  }
+}
 toggleMenu.addEventListener("click", () => {
   unitToggleContainer.classList.toggle("visible");
 });
@@ -140,7 +172,18 @@ hoursToggle.addEventListener("click", () => {
 });
 
 function convertToFahrenheit(celcius) {
-  return (celcius * 9) / 5 + 32;
+  return limitDecimal((celcius * 9) / 5 + 32);
+}
+function convertToMph(kmph) {
+  return limitDecimal(kmph / 1.609);
+}
+function limitDecimal(number) {
+  let newNumber = number;
+  let [wholeNum, decimal] = number.toString().split(".");
+  if (decimal && decimal.length > 1) {
+    newNumber = wholeNum.concat(".", decimal.slice(0, 1));
+  }
+  return newNumber;
 }
 function processTime(time) {
   let isPM = false;
@@ -177,8 +220,10 @@ function processData(data, dayIndex = null) {
     uvindex,
     precipitation,
     pressure,
-    wind,
-    windgust,
+    windkmph,
+    windmph,
+    windgustkmph,
+    windgustmph,
     sunrise,
     sunset;
   if (dayIndex != null && dayIndex >= 0 && dayIndex < data.days.length) {
@@ -192,10 +237,10 @@ function processData(data, dayIndex = null) {
     }
     time = processTime(hour.datetime);
     weekday = processWeekday(day.datetime);
-    temperatureCelcius = hour.temp.toFixed(0);
-    temperatureFahrenheit = convertToFahrenheit(hour.temp).toFixed(0);
-    feelslikeCelcius = hour.feelslike.toFixed(0);
-    feelslikeFahrenheit = convertToFahrenheit(hour.feelslike).toFixed(0);
+    temperatureCelcius = hour.temp;
+    temperatureFahrenheit = convertToFahrenheit(hour.temp);
+    feelslikeCelcius = hour.feelslike;
+    feelslikeFahrenheit = convertToFahrenheit(hour.feelslike);
     description = day.description;
     icon = hour.icon;
     condition = hour.conditions;
@@ -205,8 +250,15 @@ function processData(data, dayIndex = null) {
     uvindex = hour.uvindex;
     precipitation = `${hour.precipprob}%`;
     pressure = `${hour.pressure} mb`;
-    wind = `${hour.windspeed} km/h`;
-    windgust = `${hour.windgust ? `${hour.windgust} km/h` : "--"}`;
+    windkmph = hour.windspeed;
+    windmph = convertToMph(hour.windspeed);
+    if (hour.windgust) {
+      windgustkmph = hour.windgust;
+      windgustmph = convertToMph(hour.windgust);
+    } else {
+      windgustkmph = null;
+      windgustmph = null;
+    }
     sunrise = processTime(day.sunrise);
     sunset = processTime(day.sunset);
   } else {
@@ -220,10 +272,10 @@ function processData(data, dayIndex = null) {
     }
     time = processTime(currentConditions.datetime);
     weekday = processWeekday(days[0].datetime);
-    temperatureCelcius = currentConditions.temp.toFixed(0);
-    temperatureFahrenheit = convertToFahrenheit(currentConditions.temp).toFixed(0);
-    feelslikeCelcius = currentConditions.feelslike.toFixed(0);
-    feelslikeFahrenheit = convertToFahrenheit(currentConditions.feelslike).toFixed(0);
+    temperatureCelcius = currentConditions.temp;
+    temperatureFahrenheit = convertToFahrenheit(currentConditions.temp);
+    feelslikeCelcius = currentConditions.feelslike;
+    feelslikeFahrenheit = convertToFahrenheit(currentConditions.feelslike);
     description = days[0].description;
     icon = currentConditions.icon;
     condition = currentConditions.conditions;
@@ -233,8 +285,15 @@ function processData(data, dayIndex = null) {
     uvindex = currentConditions.uvindex;
     precipitation = `${currentConditions.precipprob}%`;
     pressure = `${currentConditions.pressure} mb`;
-    wind = `${currentConditions.windspeed} km/h`;
-    windgust = `${currentConditions.windgust ? `${currentConditions.windgust} km/h` : "--"}`;
+    windkmph = currentConditions.windspeed;
+    windmph = convertToMph(currentConditions.windspeed);
+    if (currentConditions.windgust) {
+      windgustkmph = currentConditions.windgust;
+      windgustmph = convertToMph(currentConditions.windgust);
+    } else {
+      windgustkmph = null;
+      windgustmph = null;
+    }
     sunrise = processTime(data.currentConditions.sunrise);
     sunset = processTime(data.currentConditions.sunset);
   }
@@ -254,8 +313,10 @@ function processData(data, dayIndex = null) {
     uvindex,
     precipitation,
     pressure,
-    wind,
-    windgust,
+    windkmph,
+    windmph,
+    windgustkmph,
+    windgustmph,
     sunrise,
     sunset,
   };
@@ -297,21 +358,30 @@ function displayForecast(data) {
   DOMDetailUVIndex.textContent = data.uvindex;
   DOMDetailPrecipitation.textContent = data.precipitation;
   DOMDetailPressure.textContent = data.pressure;
-  DOMDetailWind.textContent = data.wind;
-  DOMDetailWindGust.textContent = data.windgust;
+  DOMDetailWind.dataset.kmph = data.windkmph;
+  DOMDetailWind.dataset.mph = data.windmph;
+  DOMDetailWindGust.dataset.kmph = data.windgustkmph;
+  DOMDetailWindGust.dataset.mph = data.windgustmph;
+  if (unitToggleContainer.dataset.speed == "mph") {
+    DOMDetailWind.textContent = `${data.windmph} mph`;
+    DOMDetailWindGust.textContent = `${data.windgustmph ? `${data.windgustmph} mph` : "--"}`;
+  } else {
+    DOMDetailWind.textContent = `${data.windkmph} km/h`;
+    DOMDetailWindGust.textContent = `${data.windgustkmph ? `${data.windgustkmph} km/h` : "--"}`;
+  }
   DOMDetailSunrise.textContent = data.sunrise;
   DOMDetailSunset.textContent = data.sunset;
 }
-
+// Fix Undefined temperature
 function processDays(days) {
   const processedDays = [];
   days.forEach((day) => {
     const processedDay = {};
     let weekday = processWeekday(day.datetime);
-    processedDay.weekday = new Date(day.datetime).getDate() === new Date().getDate() ? "Today" : weekday;
+    processedDay.weekday = new Date(day.datetime).getDate() === new Date(days[0].datetime).getDate() ? "Today" : weekday;
     processedDay.icon = day.icon;
-    processedDay.temperatureCelcius = day.temp.toFixed(0);
-    processedDay.temperatureFahrenheit = convertToFahrenheit(day.temp).toFixed(0);
+    processedDay.temperatureCelcius = day.temp;
+    processedDay.temperatureFahrenheit = convertToFahrenheit(day.temp);
     processedDay.conditions = day.conditions;
     processedDays.push(processedDay);
   });
@@ -389,8 +459,8 @@ function processHours(hours, currentHour) {
     processedHour.fulltime = hour.datetime;
     processedHour.time = processTime(hour.datetime);
     processedHour.icon = hour.icon;
-    processedHour.temperatureCelcius = hour.temp.toFixed(0);
-    processedHour.temperatureFahrenheit = convertToFahrenheit(hour.temp).toFixed(0);
+    processedHour.temperatureCelcius = hour.temp;
+    processedHour.temperatureFahrenheit = convertToFahrenheit(hour.temp);
     processedHour.conditions = hour.conditions;
     processedHours.push(processedHour);
   });
@@ -400,8 +470,8 @@ function processHours(hours, currentHour) {
     processedCurrentHour.fulltime = currentHour.datetime;
     processedCurrentHour.time = processTime(currentHour.datetime);
     processedCurrentHour.icon = currentHour.icon;
-    processedCurrentHour.temperatureCelcius = currentHour.temp.toFixed(0);
-    processedCurrentHour.temperatureFahrenheit = convertToFahrenheit(currentHour.temp).toFixed(0);
+    processedCurrentHour.temperatureCelcius = currentHour.temp;
+    processedCurrentHour.temperatureFahrenheit = convertToFahrenheit(currentHour.temp);
     processedCurrentHour.conditions = currentHour.conditions;
     processedCurrentHour.currentForecast = true;
     const insertingIndex = processedHours.findIndex(
