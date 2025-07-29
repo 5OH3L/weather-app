@@ -94,19 +94,19 @@ mphToggle.addEventListener("click", () => {
 });
 function displayKmph() {
   unitToggleContainer.dataset.speed = "kmph";
-  if (DOMDetailWind.dataset.kmph) {
+  if (DOMDetailWind.dataset.kmph && DOMDetailWind.dataset.kmph != 'null') {
     DOMDetailWind.textContent = `${DOMDetailWind.dataset.kmph} km/h`;
   }
-  if (DOMDetailWindGust.dataset.kmph) {
+  if (DOMDetailWindGust.dataset.kmph && DOMDetailWindGust.dataset.kmph != 'null') {
     DOMDetailWindGust.textContent = `${DOMDetailWindGust.dataset.kmph} km/h`;
   }
 }
 function displayMph() {
   unitToggleContainer.dataset.speed = "mph";
-  if (DOMDetailWind.dataset.mph) {
+  if (DOMDetailWind.dataset.mph && DOMDetailWind.dataset.mph != 'null') {
     DOMDetailWind.textContent = `${DOMDetailWind.dataset.mph} mph`;
   }
-  if (DOMDetailWindGust.dataset.mph) {
+  if (DOMDetailWindGust.dataset.mph && DOMDetailWindGust.dataset.mph != 'null') {
     DOMDetailWindGust.textContent = `${DOMDetailWindGust.dataset.mph} mph`;
   }
 }
