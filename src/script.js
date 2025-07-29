@@ -34,6 +34,10 @@ const daysHoursToggle = document.getElementById("days-hours-toggle-container");
 const daysToggle = document.getElementById("days-toggle");
 const hoursToggle = document.getElementById("hours-toggle");
 const daysHoursContainer = document.getElementById("days-hours");
+const messageContainer = document.getElementById("message-container");
+const messageHeader = document.getElementById("message-header");
+const messageText = document.getElementById("message-text");
+const messageCloseButton = document.getElementById("message-close");
 let APIResponse = null;
 
 celciusToggle.addEventListener("click", () => {
@@ -204,17 +208,37 @@ function displayDaysHours(response, currentConditions = null) {
   }
 }
 
+function showMessage(header, text, closeButtonText) {
+  messageHeader.textContent = header;
+  messageText.textContent = text;
+  messageCloseButton.textContent = closeButtonText;
+  messageContainer.classList.add("visible");
+}
+messageCloseButton.addEventListener("click", hideMessage);
+function hideMessage() {
+  messageContainer.classList.remove("visible");
+}
+
 function searchWeather() {
   if (search.value.trim() !== "" || search.value.trim() !== null) {
-    getWeather(search.value).then((response) => {
-      daysHoursContainer.dataset.selectedDayIndex = 0;
-      daysHoursContainer.dataset.selectedHourIndex = -1;
-      displayForecast(processData(response));
-      displayDaysHours(response, response.currentConditions);
-      APIResponse = response;
-      localStorage.setItem("APIResponse", JSON.stringify(response));
-    });
-    search.value = "";
+    getWeather(search.value)
+      .then((response) => {
+        if (Number(response) == 400) {
+          showMessage("Invalid Request", "The request you made was invalid. Please ensure the information is correct and try again.", "OK");
+        } else if (Number(response) == 429) {
+          showMessage("Query limit exceeded", "Query limit of 1000 exceeded for today. Please try again tomorrow.", "Dismiss");
+        } else {
+          daysHoursContainer.dataset.selectedDayIndex = 0;
+          daysHoursContainer.dataset.selectedHourIndex = -1;
+          displayForecast(processData(response));
+          displayDaysHours(response, response.currentConditions);
+          APIResponse = response;
+          localStorage.setItem("APIResponse", JSON.stringify(response));
+        }
+      })
+      .finally(() => {
+        search.value = "";
+      });
   }
 }
 daysToggle.addEventListener("click", () => {
@@ -386,11 +410,15 @@ function processData(data, dayIndex = null) {
   return processedData;
 }
 async function getWeather(location) {
-  const response = await fetch(
-    `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=metric&key=68VQNA672BC6B3AQ56V4JGL7J&contentType=json&iconSet=icons2`
-  );
-  const json = await response.json();
-  return json;
+  try {
+    const response = await fetch(
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=metric&key=68VQNA672BC6B3AQ56V4JGL7J&contentType=json&iconSet=icons2`
+    );
+    if (!response.ok) throw new Error(response.status);
+    return await response.json();
+  } catch (error) {
+    return error.message;
+  }
 }
 function displayForecast(data) {
   DOMTime.dataset.timeTwelveHour = processTime(data.time);
@@ -644,9 +672,12 @@ function loadInitialPage() {
   });
   const storedAPIResponse = JSON.parse(localStorage.getItem("APIResponse"));
   if (storedAPIResponse) {
-    displayForecast(processData(storedAPIResponse))
-    displayForecastDays(processDays(storedAPIResponse.days))
+    displayForecast(processData(storedAPIResponse));
+    displayForecastDays(processDays(storedAPIResponse.days));
     APIResponse = storedAPIResponse;
   }
+  setTimeout(() => {
+    messageContainer.style.visibility = "visible";
+  }, 1000);
 }
 window.addEventListener("DOMContentLoaded", loadInitialPage);
