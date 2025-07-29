@@ -18,9 +18,30 @@
           <button id="search-button"><img src="./icons/icon-search.svg" alt="Search Icon" class="icon"></button>
           <button id="erase-button"><img src="./icons/icon-erase.svg" alt="Erase Icon" class="icon"></button>
         </div>
-        <div id="unit-toggle-container" class="celcius" data-selected="celcius">
-          <button id="celcius-toggle">°C</button>
-          <button id="fahrenheit-toggle">°F</button>
+        <div id="unit-toggle-container" data-temperature="metric" data-speed="metric" data-time="metric">
+          <button id="toggle-menu"><img src="./icons/icon-menu.svg" alt="Menu Icon" class="icon"></button>
+          <div id="all-unit-toggles-wrapper">
+            <div id="all-unit-toggles">
+              <div id="toggle-temperature" class="toggle-container">
+                <div class="toggle-options">
+                  <button id="toggle-temperature-celcius" class="toggle-option selected">°C</button>
+                  <button id="toggle-temperature-fahrenheit" class="toggle-option">°F</button>
+                </div>
+              </div>
+              <div id="toggle-speed" class="toggle-container">
+                <div class="toggle-options">
+                  <button id="toggle-speed-kmph" class="toggle-option selected">km/h</button>
+                  <button id="toggle-speed-mph" class="toggle-option">mph</button>
+                </div>
+              </div>
+              <div id="toggle-time" class="toggle-container">
+                <div class="toggle-options">
+                  <button id="toggle-time-12" class="toggle-option selected">12-hour</button>
+                  <button id="toggle-time-24" class="toggle-option">24-hour</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
       <main id="main">

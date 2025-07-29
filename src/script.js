@@ -4,9 +4,8 @@ const websiteIcon = document.getElementById("website-icon");
 const search = document.getElementById("search");
 const searchButton = document.getElementById("search-button");
 const eraseButton = document.getElementById("erase-button");
-const unitToggle = document.getElementById("unit-toggle-container");
-const celciusToggle = document.getElementById("celcius-toggle");
-const fahrenheitToggle = document.getElementById("fahrenheit-toggle");
+const unitToggleContainer = document.getElementById('unit-toggle-container')
+const toggleMenu = document.getElementById('toggle-menu')
 const DOMTime = document.getElementById("time");
 const DOMDay = document.getElementById("day");
 const DOMTemperature = document.getElementById("temperature");
@@ -29,6 +28,10 @@ const daysHoursToggle = document.getElementById("days-hours-toggle-container");
 const daysToggle = document.getElementById("days-toggle");
 const hoursToggle = document.getElementById("hours-toggle");
 const daysHoursContainer = document.getElementById("days-hours");
+
+toggleMenu.addEventListener('click', ()=>{
+  unitToggleContainer.classList.toggle('visible')
+})
 websiteIcon.addEventListener("click", () => {
   if (document.body.classList.contains("day")) {
     document.body.removeAttribute("class");
@@ -78,21 +81,6 @@ function searchWeather() {
     search.value = "";
   }
 }
-
-celciusToggle.addEventListener("click", () => {
-  if (!(unitToggle.dataset.selected === "celcius")) {
-    unitToggle.dataset.selected = "celcius";
-    unitToggle.className = "celcius";
-    toggleCelcius();
-  }
-});
-fahrenheitToggle.addEventListener("click", () => {
-  if (!(unitToggle.dataset.selected === "fahrenheit")) {
-    unitToggle.dataset.selected = "fahrenheit";
-    unitToggle.className = "fahrenheit";
-    toggleFahrenheit();
-  }
-});
 daysToggle.addEventListener("click", () => {
   if (daysHoursToggle.dataset.selected === "days") return;
   daysHoursToggle.dataset.selected = "days";
