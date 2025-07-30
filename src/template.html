@@ -7,7 +7,10 @@
     <title>SkySense | Weather Forecast</title>
   </head>
   <body>
-    <div id="content">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+    </div>
+    <div id="content" style="visibility: hidden; overflow: hidden">
       <header id="header">
         <div id="website-icon-name-container">
           <img id="website-icon" src="./icons/favicon.svg" alt="Website Icon" title="Toggle day/night mode" />
@@ -56,27 +59,30 @@
         <section id="forecast-details-container">
           <section id="forecast-container">
             <section id="time-day-container">
-              <p id="time">--:-- --</p>
-              <p id="day">----</p>
+              <p id="time" class="skeletion-text-loading">--:-- --</p>
+              <p id="day" class="skeletion-text-loading">----</p>
             </section>
             <div id="temperature-description-details-container-wrapper">
               <div id="temperature-description-container">
                 <div id="temperature-feelslike-container">
                   <div id="temperature-feelslike-wrapper">
-                    <p id="temperature">--°-</p>
-                    <p id="feelslike">Feels like --°-</p>
+                    <p id="temperature" class="skeletion-text-loading">--°-</p>
+                    <p id="feelslike" class="skeletion-text-loading">Feels like --°-</p>
                   </div>
                 </div>
-                <p id="description">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                <p id="description" class="skeletion-text-loading">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
               </div>
               <div id="icon-status-container">
-                <img
-                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                  alt="day cloudy color icon"
-                  id="weather-icon"
-                  data-icon="partly-cloudy-day"
-                />
-                <h2 id="weather-condition">----</h2>
+                <div class="icon-wrapper">
+                  <img
+                    src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                    alt="day cloudy color icon"
+                    id="weather-icon"
+                    class="skeletion-icon-loading"
+                    data-icon="partly-cloudy-day"
+                  />
+                </div>
+                <h2 id="weather-condition" class="skeletion-text-loading">----</h2>
               </div>
             </div>
           </section>
@@ -87,14 +93,21 @@
                 <img src="./icons/details/icon-location.svg" alt="location icon" class="detail-icon" />
                 <div class="detail-label-text-container">
                   <div id="detail-label-location">Location</div>
-                  <div id="detail-location">----</div>
+                  <div id="detail-location" class="skeletion-text-loading">----</div>
                 </div>
               </div>
               <div id="detail-date-container" class="detail">
-                <img src="./icons/weekday/icon-weekday.svg" alt="date icon" class="detail-icon" id="detail-icon-date" />
+                <div id="date-icon-wrapper">
+                  <img
+                    src="./icons/weekday/icon-weekday.svg"
+                    alt="date icon"
+                    class="detail-icon"
+                    id="detail-icon-date"
+                  />
+                </div>
                 <div class="detail-label-text-container">
                   <div id="detail-label-date">Date</div>
-                  <div id="detail-date">--/--/----</div>
+                  <div id="detail-date" class="skeletion-text-loading">--/--/----</div>
                 </div>
               </div>
             </section>
@@ -103,14 +116,14 @@
                 <img src="./icons/details/icon-humidity.svg" alt="humidity icon" class="detail-icon" />
                 <div class="detail-label-text-container">
                   <div id="detail-label-humidity">Humidity</div>
-                  <div id="detail-humidity">---%</div>
+                  <div id="detail-humidity" class="skeletion-text-loading">---%</div>
                 </div>
               </div>
               <div id="detail-uvindex-container" class="detail">
                 <img src="./icons/details/icon-uvindex.svg" alt="uvindex icon" class="detail-icon" />
                 <div class="detail-label-text-container">
                   <div id="detail-label-uvindex">UV Index</div>
-                  <div id="detail-uvindex">--</div>
+                  <div id="detail-uvindex" class="skeletion-text-loading">--</div>
                 </div>
               </div>
             </section>
@@ -119,14 +132,14 @@
                 <img src="./icons/details/icon-rain.svg" alt="precipiation icon" class="detail-icon" />
                 <div class="detail-label-text-container">
                   <div id="detail-label-precipitation">Precipitation</div>
-                  <div id="detail-precipitation">---%</div>
+                  <div id="detail-precipitation" class="skeletion-text-loading">---%</div>
                 </div>
               </div>
               <div id="detail-pressure-container" class="detail">
                 <img src="./icons/details/icon-pressure.svg" alt="pressure icon" class="detail-icon" />
                 <div class="detail-label-text-container">
                   <div id="detail-label-pressure">Pressure</div>
-                  <div id="detail-pressure">--- mb</div>
+                  <div id="detail-pressure" class="skeletion-text-loading">--- mb</div>
                 </div>
               </div>
             </section>
@@ -135,14 +148,14 @@
                 <img src="./icons/details/icon-wind.svg" alt="wind icon" class="detail-icon" />
                 <div class="detail-label-text-container">
                   <div id="detail-label-wind">Wind</div>
-                  <div id="detail-wind">----</div>
+                  <div id="detail-wind" class="skeletion-text-loading">----</div>
                 </div>
               </div>
               <div id="detail-windgust-container" class="detail">
                 <img src="./icons/details/icon-windgust.svg" alt="windgust icon" class="detail-icon" />
                 <div class="detail-label-text-container">
                   <div id="detail-label-windgust">Wind Gust</div>
-                  <div id="detail-windgust">----</div>
+                  <div id="detail-windgust" class="skeletion-text-loading">----</div>
                 </div>
               </div>
             </section>
@@ -151,14 +164,14 @@
                 <img src="./icons/details/icon-sunrise.svg" alt="sunrise icon" class="detail-icon" />
                 <div class="detail-label-text-container">
                   <div id="detail-label-sunrise">Sunrise</div>
-                  <div id="detail-sunrise">----</div>
+                  <div id="detail-sunrise" class="skeletion-text-loading">----</div>
                 </div>
               </div>
               <div id="detail-sunset-container" class="detail">
                 <img src="./icons/details/icon-sunset.svg" alt="sunset icon" class="detail-icon" />
                 <div class="detail-label-text-container">
                   <div id="detail-label-sunset">Sunset</div>
-                  <div id="detail-sunset">----</div>
+                  <div id="detail-sunset" class="skeletion-text-loading">----</div>
                 </div>
               </div>
             </section>
@@ -171,154 +184,184 @@
           </div>
           <div id="days-hours" data-selected-day-index="0" data-selected-hour-index="-1" data-additional-hour="false">
             <div class="day-hour selected">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
-            <div class="day-hour">
-              <div class="weekday-daytime">----</div>
-              <img
-                src="./icons/weather-condition/icon-partly-cloudy-day.svg"
-                alt="Rain Icon"
-                class="weather-condition-icon"
-                data-icon="rain"
-              />
-              <p class="weekday-daytime-temperature">--°-</p>
+            <div class="day-hour selected">
+              <div class="weekday-daytime skeletion-text-loading">----</div>
+              <div class="icon-wrapper">
+                <img
+                  src="./icons/weather-condition/icon-partly-cloudy-day.svg"
+                  alt="Rain Icon"
+                  class="weather-condition-icon skeletion-icon-loading"
+                  data-icon="rain"
+                />
+              </div>
+              <p class="weekday-daytime-temperature skeletion-text-loading">--°-</p>
             </div>
           </div>
         </section>

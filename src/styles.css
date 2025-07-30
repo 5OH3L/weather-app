@@ -280,6 +280,7 @@ body.day #toggle-menu > .icon {
   align-items: stretch;
   border: var(--section-border);
   border-radius: 0.4rem;
+  padding: 0.5rem;
   color: var(--text-color);
   backdrop-filter: var(--section-backdrop-filter);
   background-color: var(--section-background-color);
@@ -337,7 +338,7 @@ body.day #toggle-menu > .icon {
   justify-content: center;
   align-items: center;
   width: 95%;
-  padding-left: 5%;
+  padding-left: 0.5rem;
   line-height: 2.4rem;
 }
 #icon-status-container {
@@ -350,13 +351,13 @@ body.day #toggle-menu > .icon {
   padding: 1.5rem;
   gap: 1rem;
 }
-#icon-status-container > #weather-icon {
-  --size: 15rem;
+#icon-status-container > .icon-wrapper > #weather-icon {
+  --size: 14rem;
   pointer-events: none;
   height: var(--size);
   width: var(--size);
 }
-#icon-status-container > #weather-condition {
+#icon-status-container > .icon-wrapper > #weather-condition {
   letter-spacing: 0.1rem;
   white-space: nowrap;
 }
@@ -514,7 +515,7 @@ body.day #days-hours-container > #days-hours > .day-hour.selected {
   font-size: 1.1rem;
   font-weight: 500;
 }
-#days-hours-container > #days-hours > .day-hour > .weather-condition-icon {
+#days-hours-container > #days-hours > .day-hour > .icon-wrapper > .weather-condition-icon {
   --size: 3.4rem;
   height: var(--size);
   width: var(--size);
@@ -609,4 +610,136 @@ body.day #days-hours-container > #days-hours > .day-hour.selected {
 #message-container #message-close:active {
   transform: scale(1.025);
   background-color: var(--button-hover-background-color);
+}
+
+/* Loading animation */
+.skeletion-text-loading {
+  position: relative;
+  border-radius: 0.4rem;
+  overflow-x: hidden;
+}
+.skeletion-text-loading::before,
+.skeletion-text-loading::after {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  content: "";
+}
+.skeletion-text-loading::before {
+  background-color: lightslategray;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s 0.2s ease;
+}
+#main.loading .skeletion-text-loading::before {
+  opacity: 1;
+}
+.skeletion-text-loading::after {
+  opacity: 0;
+  background-image: linear-gradient(
+    to right,
+    transparent 0%,
+    transparent 20%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 80%,
+    transparent 100%
+  );
+  z-index: 10;
+  transition: opacity 0.3s 0.2s ease;
+  animation: left-to-right 1s linear infinite;
+}
+#main.loading .skeletion-text-loading::after {
+  opacity: 1;
+}
+@keyframes left-to-right {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.skeletion-icon-loading {
+  position: relative;
+  opacity: 1;
+  transition: opacity 0.3s 0.2s ease;
+}
+#main.loading .skeletion-icon-loading {
+  opacity: 0;
+}
+.icon-wrapper {
+  background-color: transparent;
+  border-radius: 0.4rem;
+  transition: background-color 0.3s 0.2s ease;
+}
+#main.loading .icon-wrapper {
+  background-color: var(--section-background-color);
+}
+#date-icon-wrapper {
+  position: relative;
+}
+#date-icon-wrapper::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  content: "";
+  background-image: url("./icons/weekday/icon-weekday.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s 0.2s ease;
+}
+#main.loading #date-icon-wrapper::after {
+  opacity: 1;
+}
+
+/* Initial page loader */
+#loader-wrapper {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100dvw;
+  will-change: opacity;
+  transition: opacity 0.5s ease;
+  pointer-events: all;
+  background-color: #1c1c1c;
+  z-index: 30;
+}
+#loader {
+  width: 80px;
+  aspect-ratio: 1;
+  display: grid;
+  border: 4px solid #0000;
+  border-radius: 50%;
+  border-color: #adb7c1 #0000;
+  animation: l16 1s infinite linear;
+}
+#loader::before,
+#loader::after {
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+}
+#loader::before {
+  border-color: #f1f3f4 #0000;
+  animation: inherit;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+}
+#loader::after {
+  margin: 8px;
+}
+@keyframes l16 {
+  100% {
+    transform: rotate(1turn);
+  }
 }

@@ -1,5 +1,7 @@
 import "./styles.css";
 
+const loaderWrapper = document.getElementById("loader-wrapper");
+const content = document.getElementById("content");
 const websiteIcon = document.getElementById("website-icon");
 const search = document.getElementById("search");
 const searchButton = document.getElementById("search-button");
@@ -12,6 +14,7 @@ const kmphToggle = document.getElementById("toggle-speed-kmph");
 const mphToggle = document.getElementById("toggle-speed-mph");
 const twelveHour = document.getElementById("toggle-time-twelve");
 const twentyFourHour = document.getElementById("toggle-time-twenty-four");
+const forecastContainer = document.getElementById("main");
 const DOMTime = document.getElementById("time");
 const DOMDay = document.getElementById("day");
 const DOMTemperature = document.getElementById("temperature");
@@ -221,6 +224,7 @@ function hideMessage() {
 
 function searchWeather() {
   if (search.value.trim() !== "" || search.value.trim() !== null) {
+    forecastContainer.className = "loading";
     getWeather(search.value)
       .then((response) => {
         if (Number(response) == 400) {
@@ -247,6 +251,7 @@ function searchWeather() {
       })
       .finally(() => {
         search.value = "";
+        forecastContainer.className = "";
       });
   }
 }
@@ -421,6 +426,8 @@ function processData(data, dayIndex = null) {
   return processedData;
 }
 async function getWeather(location) {
+  // Delay to let the skeletion animation visible
+  await delay(500);
   try {
     const response = await fetch(
       `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=metric&key=68VQNA672BC6B3AQ56V4JGL7J&contentType=json&iconSet=icons2`
@@ -430,6 +437,9 @@ async function getWeather(location) {
   } catch (error) {
     return error.message;
   }
+}
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 function displayForecast(data) {
   DOMTime.dataset.timeTwelveHour = processTime(data.time);
@@ -542,17 +552,20 @@ function displayForecastDays(days) {
 
     const DOMWeekday = document.createElement("div");
     DOMWeekday.textContent = day.weekday;
-    DOMWeekday.className = "weekday-daytime";
+    DOMWeekday.className = "weekday-daytime skeletion-text-loading";
     DOMDayContainer.appendChild(DOMWeekday);
 
+    const DOMIconWraper = document.createElement('div')
+    DOMIconWraper.className ="icon-wrapper"
     const DOMIcon = document.createElement("img");
     import("./weather-icons.js").then((module) => {
       DOMIcon.src = module[`icon0${day.icon.split("-").join("0")}`];
     });
     DOMIcon.alt = `${day.icon.split("-").join(" ")} icon`;
-    DOMIcon.className = "weather-condition-icon";
+    DOMIcon.className = "weather-condition-icon skeletion-icon-loading";
     DOMIcon.dataset.icon = day.icon;
-    DOMDayContainer.appendChild(DOMIcon);
+    DOMIconWraper.appendChild(DOMIcon)
+    DOMDayContainer.appendChild(DOMIconWraper);
 
     const DOMDayTemperature = document.createElement("p");
     if (unitToggleContainer.dataset.temperature == "fahrenheit") {
@@ -560,7 +573,7 @@ function displayForecastDays(days) {
     } else {
       DOMDayTemperature.textContent = `${day.temperatureCelcius}°C`;
     }
-    DOMDayTemperature.className = "weekday-daytime-temperature";
+    DOMDayTemperature.className = "weekday-daytime-temperature skeletion-text-loading";
     DOMDayContainer.appendChild(DOMDayTemperature);
 
     daysHoursContainer.appendChild(DOMDayContainer);
@@ -646,7 +659,7 @@ function displayForecastHours(hours) {
     } else {
       DOMTime.textContent = processTime(hour.time);
     }
-    DOMTime.className = "weekday-daytime";
+    DOMTime.className = "weekday-daytime skeletion-text-loading";
     DOMHourContainer.appendChild(DOMTime);
 
     const DOMIcon = document.createElement("img");
@@ -654,7 +667,7 @@ function displayForecastHours(hours) {
       DOMIcon.src = module[`icon0${hour.icon.split("-").join("0")}`];
     });
     DOMIcon.alt = `${hour.icon.split("-").join(" ")} icon`;
-    DOMIcon.className = "weather-condition-icon";
+    DOMIcon.className = "weather-condition-icon skeletion-icon-loading";
     DOMIcon.dataset.icon = hour.icon;
     DOMHourContainer.appendChild(DOMIcon);
 
@@ -664,7 +677,7 @@ function displayForecastHours(hours) {
     } else {
       DOMHourTemperature.textContent = `${hour.temperatureCelcius}°C`;
     }
-    DOMHourTemperature.className = "weekday-daytime-temperature";
+    DOMHourTemperature.className = "weekday-daytime-temperature skeletion-text-loading";
     DOMHourContainer.appendChild(DOMHourTemperature);
 
     daysHoursContainer.appendChild(DOMHourContainer);
@@ -701,7 +714,12 @@ function loadInitialPage() {
     displayForecast(processData(storedAPIResponse));
   }
   setTimeout(() => {
-    messageContainer.style.visibility = "visible";
+    messageContainer.removeAttribute("style");
+    setTimeout(() => {
+      content.removeAttribute("style");
+      loaderWrapper.style.opacity = 0;
+      loaderWrapper.style.pointerEvents = "none";
+    }, 500);
   }, 1000);
 }
 window.addEventListener("DOMContentLoaded", loadInitialPage);
