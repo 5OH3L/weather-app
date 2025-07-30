@@ -233,7 +233,12 @@ function searchWeather() {
           showMessage("Server Error", "The server encountered an error, could not get requested query.", "Dismiss");
         } else {
           daysHoursContainer.dataset.selectedDayIndex = 0;
-          daysHoursContainer.dataset.selectedHourIndex = -1;
+          if (isAdditionalHour(response)) {
+            daysHoursContainer.dataset.selectedHourIndex = -1;
+            daysHoursContainer.dataset.additionalHour = "true";
+          } else {
+            daysHoursContainer.dataset.selectedHourIndex = getCurrentHour();
+          }
           displayForecast(processData(response));
           displayDaysHours(response, response.currentConditions);
           APIResponse = response;
@@ -284,9 +289,11 @@ function processTime(time) {
   const minutes = slicedSplitTime[1];
   if (hours > 12) {
     hours = hours - 12;
-    isPM = true;
   } else if (hours === 0) {
     hours = 12;
+  }
+  if (hours > 12 || hours === 12) {
+    isPM = true;
   }
   return `${hours}:${minutes} ${isPM ? "PM" : "AM"}`;
 }
@@ -497,7 +504,7 @@ function processDays(days) {
   return processedDays;
 }
 function loadSelectedDay(elementIndex) {
-  if (daysHoursContainer.dataset.selectedDayIndex === elementIndex) return;
+  if (daysHoursContainer.dataset.selectedDayIndex == elementIndex) return;
   daysHoursContainer.dataset.selectedDayIndex = elementIndex;
   const children = [...daysHoursContainer.children];
   children.forEach((child) => {
@@ -507,12 +514,17 @@ function loadSelectedDay(elementIndex) {
       child.className = "day-hour";
     }
   });
-  let hourIndex = null;
-  if (daysHoursContainer.dataset.selectedDayIndex != 0 && daysHoursContainer.dataset.selectedHourIndex == -1) {
-    hourIndex = new Date().getHours();
-    daysHoursContainer.dataset.selectedHourIndex = hourIndex;
+  if (
+    daysHoursContainer.dataset.selectedDayIndex != 0 &&
+    daysHoursContainer.dataset.selectedHourIndex == -1 &&
+    daysHoursContainer.dataset.additionalHour == "true"
+  ) {
+    daysHoursContainer.dataset.selectedHourIndex = getCurrentHour();
   }
   displayForecast(processData(APIResponse, elementIndex));
+}
+function getCurrentHour() {
+  return Number(APIResponse.currentConditions.datetime.slice(0, 2));
 }
 function displayForecastDays(days) {
   daysHoursContainer.innerHTML = "";
@@ -606,16 +618,19 @@ function loadSelectedHour(elementIndex) {
   });
   displayForecast(processData(APIResponse, daysHoursContainer.dataset.selectedDayIndex, elementIndex));
 }
+function isAdditionalHour(data) {
+  return Number(data.currentConditions.datetime.slice(0, 5).split(":")[1]) != 0;
+}
 function displayForecastHours(hours) {
   daysHoursContainer.innerHTML = "";
-  let currentForecastAdded = false;
+  let additionalForecastAdded = false;
   hours.forEach((hour, hourIndex) => {
     const DOMHourContainer = document.createElement("div");
-    if (hour.currentForecast) {
+    if (hour.currentForecast && hours.length > 24) {
+      additionalForecastAdded = true;
       DOMHourContainer.dataset.index = -1;
-      currentForecastAdded = true;
     } else {
-      DOMHourContainer.dataset.index = currentForecastAdded ? hourIndex - 1 : hourIndex;
+      DOMHourContainer.dataset.index = additionalForecastAdded ? hourIndex - 1 : hourIndex;
     }
     DOMHourContainer.dataset.celcius = hour.temperatureCelcius;
     DOMHourContainer.dataset.fahrenheit = hour.temperatureFahrenheit;
@@ -676,9 +691,14 @@ function loadInitialPage() {
   });
   const storedAPIResponse = JSON.parse(localStorage.getItem("APIResponse"));
   if (storedAPIResponse) {
-    displayForecast(processData(storedAPIResponse));
-    displayForecastDays(processDays(storedAPIResponse.days));
     APIResponse = storedAPIResponse;
+    if (isAdditionalHour(APIResponse)) {
+      daysHoursContainer.dataset.additionalHour = "true";
+    } else {
+      daysHoursContainer.dataset.selectedHourIndex = getCurrentHour();
+    }
+    displayForecastDays(processDays(storedAPIResponse.days));
+    displayForecast(processData(storedAPIResponse));
   }
   setTimeout(() => {
     messageContainer.style.visibility = "visible";
