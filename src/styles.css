@@ -650,6 +650,8 @@ body.day #days-hours-container > #days-hours > .day-hour.selected {
   top: 0;
   left: 0;
   content: "";
+  pointer-events: none;
+  user-select: none;
 }
 .skeletion-text-loading::before {
   background-color: lightslategray;
