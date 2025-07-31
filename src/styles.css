@@ -12,7 +12,7 @@ body {
   overflow-x: hidden;
   background-position: center;
   background-size: cover;
-  background-image: url("./images/backgrounds/background-night.jpg");
+  background-image: url("./images/backgrounds/background-night.webp");
   --search-background-color: rgba(255, 255, 255, 0.1);
   --serach-padding: 0.8rem 3.5rem;
   --serach-border: 0.12rem solid rgba(255, 255, 255, 0.5);
@@ -38,7 +38,7 @@ body::before {
   z-index: -1;
 }
 body.day {
-  background-image: url("./images/backgrounds/background-day.jpg");
+  background-image: url("./images/backgrounds/background-day.webp");
   --section-background-color: rgba(0, 0, 0, 0.05);
   --text-color: black;
   --serach-border: 0.12rem solid rgba(0, 0, 0, 0.5);
