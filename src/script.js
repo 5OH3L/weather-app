@@ -209,11 +209,11 @@ eraseButton.addEventListener("click", () => {
   search.value = "";
 });
 
-function displayDaysHours(response, currentConditions = null) {
+function displayDaysHours(response, currentConditions = null, toggling = false) {
   if (daysHoursToggle.dataset.selected === "days") {
-    displayForecastDays(processDays(response.days));
+    displayForecastDays(processDays(response.days), toggling);
   } else if (daysHoursToggle.dataset.selected === "hours") {
-    displayForecastHours(processHours(response.days[daysHoursContainer.dataset.selectedDayIndex].hours, currentConditions));
+    displayForecastHours(processHours(response.days[daysHoursContainer.dataset.selectedDayIndex].hours, currentConditions), toggling);
   }
 }
 
@@ -266,7 +266,7 @@ daysToggle.addEventListener("click", () => {
   daysHoursToggle.dataset.selected = "days";
   daysHoursToggle.className = "days";
   if (APIResponse !== null) {
-    displayDaysHours(APIResponse, APIResponse.currentConditions);
+    displayDaysHours(APIResponse, APIResponse.currentConditions, true);
   }
 });
 hoursToggle.addEventListener("click", () => {
@@ -274,7 +274,7 @@ hoursToggle.addEventListener("click", () => {
   daysHoursToggle.dataset.selected = "hours";
   daysHoursToggle.className = "hours";
   if (APIResponse !== null) {
-    displayDaysHours(APIResponse, APIResponse.currentConditions);
+    displayDaysHours(APIResponse, APIResponse.currentConditions, true);
   }
 });
 
@@ -542,7 +542,11 @@ function loadSelectedDay(elementIndex) {
 function getCurrentHour() {
   return Number(APIResponse.currentConditions.datetime.slice(0, 2));
 }
-function displayForecastDays(days) {
+async function displayForecastDays(days, toggling = false) {
+  if (toggling) {
+    daysHoursContainer.style.opacity = 0;
+    await delay(250);
+  }
   daysHoursContainer.innerHTML = "";
   days.forEach((day, dayIndex) => {
     const DOMDayContainer = document.createElement("div");
@@ -591,6 +595,10 @@ function displayForecastDays(days) {
     behavior: "smooth",
     inline: "center",
   });
+  if (toggling) {
+    await delay(250);
+    daysHoursContainer.removeAttribute("style");
+  }
 }
 function processHours(hours, currentHour) {
   const processedHours = [];
@@ -640,7 +648,11 @@ function loadSelectedHour(elementIndex) {
 function isAdditionalHour(data) {
   return Number(data.currentConditions.datetime.slice(0, 5).split(":")[1]) != 0;
 }
-function displayForecastHours(hours) {
+async function displayForecastHours(hours, toggling = false) {
+  if (toggling) {
+    daysHoursContainer.style.opacity = 0;
+    await delay(250);
+  }
   daysHoursContainer.innerHTML = "";
   let additionalForecastAdded = false;
   hours.forEach((hour, hourIndex) => {
@@ -702,6 +714,10 @@ function displayForecastHours(hours) {
       loadSelectedHour(event.currentTarget.dataset.index);
     });
   });
+  if (toggling) {
+    await delay(250);
+    daysHoursContainer.removeAttribute("style");
+  }
 }
 function loadInitialPage() {
   const days = [...daysHoursContainer.children];

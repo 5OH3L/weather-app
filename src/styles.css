@@ -492,6 +492,7 @@ body.day #toggle-menu > .icon {
   scrollbar-color: var(--days-hours-scrollbar-color);
   height: 9.5rem;
   flex-shrink: 0;
+  transition: opacity 0.25s ease;
 }
 #days-hours-container > #days-hours > .day-hour {
   border: var(--section-border);
