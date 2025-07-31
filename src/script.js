@@ -545,7 +545,7 @@ function getCurrentHour() {
 async function displayForecastDays(days, toggling = false) {
   if (toggling) {
     daysHoursContainer.style.opacity = 0;
-    await delay(250);
+    await delay(125);
   }
   daysHoursContainer.innerHTML = "";
   days.forEach((day, dayIndex) => {
@@ -596,7 +596,7 @@ async function displayForecastDays(days, toggling = false) {
     inline: "center",
   });
   if (toggling) {
-    await delay(250);
+    await delay(125);
     daysHoursContainer.removeAttribute("style");
   }
 }
@@ -651,7 +651,7 @@ function isAdditionalHour(data) {
 async function displayForecastHours(hours, toggling = false) {
   if (toggling) {
     daysHoursContainer.style.opacity = 0;
-    await delay(250);
+    await delay(125);
   }
   daysHoursContainer.innerHTML = "";
   let additionalForecastAdded = false;
@@ -715,7 +715,7 @@ async function displayForecastHours(hours, toggling = false) {
     });
   });
   if (toggling) {
-    await delay(250);
+    await delay(125);
     daysHoursContainer.removeAttribute("style");
   }
 }
