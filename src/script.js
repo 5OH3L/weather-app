@@ -60,32 +60,38 @@ fahrenheitToggle.addEventListener("click", () => {
 function displayCelcius() {
   unitToggleContainer.dataset.temperature = "celcius";
   if (DOMTemperature.dataset.celcius) {
-    DOMTemperature.textContent = `${DOMTemperature.dataset.celcius}°C`;
+    changeTextContent(DOMTemperature, `${DOMTemperature.dataset.celcius}°C`);
   }
   if (DOMFeelslikeTemperature.dataset.celcius) {
-    DOMFeelslikeTemperature.textContent = `Feels like ${DOMFeelslikeTemperature.dataset.celcius}°C`;
+    changeTextContent(DOMFeelslikeTemperature, `Feels like ${DOMFeelslikeTemperature.dataset.celcius}°C`);
   }
   const daysHours = [...daysHoursContainer.children];
   daysHours.forEach((dayHour) => {
     if (!dayHour.dataset.celcius) return;
     const dayHourTemperature = dayHour.getElementsByClassName("weekday-daytime-temperature")[0];
-    dayHourTemperature.textContent = `${dayHour.dataset.celcius}°C`;
+    changeTextContent(dayHourTemperature, `${dayHour.dataset.celcius}°C`);
   });
 }
 function displayFahrenheit() {
   unitToggleContainer.dataset.temperature = "fahrenheit";
   if (DOMTemperature.dataset.fahrenheit) {
-    DOMTemperature.textContent = `${DOMTemperature.dataset.fahrenheit}°F`;
+    changeTextContent(DOMTemperature, `${DOMTemperature.dataset.fahrenheit}°F`);
   }
   if (DOMFeelslikeTemperature.dataset.fahrenheit) {
-    DOMFeelslikeTemperature.textContent = `Feels like ${DOMFeelslikeTemperature.dataset.fahrenheit}°F`;
+    changeTextContent(DOMFeelslikeTemperature, `Feels like ${DOMFeelslikeTemperature.dataset.fahrenheit}°F`);
   }
   const daysHours = [...daysHoursContainer.children];
   daysHours.forEach((dayHour) => {
     if (!dayHour.dataset.fahrenheit) return;
     const dayHourTemperature = dayHour.getElementsByClassName("weekday-daytime-temperature")[0];
-    dayHourTemperature.textContent = `${dayHour.dataset.fahrenheit}°F`;
+    changeTextContent(dayHourTemperature, `${dayHour.dataset.fahrenheit}°F`);
   });
+}
+async function changeTextContent(DOMElement, textContent) {
+  DOMElement.style.opacity = 0;
+  await delay(300);
+  DOMElement.textContent = textContent;
+  DOMElement.removeAttribute("style");
 }
 kmphToggle.addEventListener("click", () => {
   if (!kmphToggle.classList.contains("selected")) {
@@ -104,19 +110,19 @@ mphToggle.addEventListener("click", () => {
 function displayKmph() {
   unitToggleContainer.dataset.speed = "kmph";
   if (DOMDetailWind.dataset.kmph && DOMDetailWind.dataset.kmph != "null") {
-    DOMDetailWind.textContent = `${DOMDetailWind.dataset.kmph} km/h`;
+    changeTextContent(DOMDetailWind, `${DOMDetailWind.dataset.kmph} km/h`);
   }
   if (DOMDetailWindGust.dataset.kmph && DOMDetailWindGust.dataset.kmph != "null") {
-    DOMDetailWindGust.textContent = `${DOMDetailWindGust.dataset.kmph} km/h`;
+    changeTextContent(DOMDetailWindGust, `${DOMDetailWindGust.dataset.kmph} km/h`);
   }
 }
 function displayMph() {
   unitToggleContainer.dataset.speed = "mph";
   if (DOMDetailWind.dataset.mph && DOMDetailWind.dataset.mph != "null") {
-    DOMDetailWind.textContent = `${DOMDetailWind.dataset.mph} mph`;
+    changeTextContent(DOMDetailWind, `${DOMDetailWind.dataset.mph} mph`);
   }
   if (DOMDetailWindGust.dataset.mph && DOMDetailWindGust.dataset.mph != "null") {
-    DOMDetailWindGust.textContent = `${DOMDetailWindGust.dataset.mph} mph`;
+    changeTextContent(DOMDetailWindGust, `${DOMDetailWindGust.dataset.mph} mph`);
   }
 }
 twelveHour.addEventListener("click", () => {
@@ -138,45 +144,45 @@ twentyFourHour.addEventListener("click", () => {
 function displayTwelveHour() {
   // Change main displaying weather time format to 12-hour format
   if (DOMTime.dataset.timeTwelveHour) {
-    DOMTime.textContent = DOMTime.dataset.timeTwelveHour;
+    changeTextContent(DOMTime, DOMTime.dataset.timeTwelveHour);
   }
   // Change all of hours' section's time to 12-hour format
   if (daysHoursToggle.dataset.selected == "hours") {
     const hours = [...daysHoursContainer.children];
     hours.forEach((hour) => {
       if (hour.dataset.timeTwelveHour) {
-        hour.getElementsByClassName("weekday-daytime")[0].textContent = hour.dataset.timeTwelveHour;
+        changeTextContent(hour.getElementsByClassName("weekday-daytime")[0], hour.dataset.timeTwelveHour);
       }
     });
   }
   // Change sunrise & sunset time format to 12-hour
   if (DOMDetailSunrise.dataset.timeTwelveHour) {
-    DOMDetailSunrise.textContent = DOMDetailSunrise.dataset.timeTwelveHour;
+    changeTextContent(DOMDetailSunrise, DOMDetailSunrise.dataset.timeTwelveHour);
   }
   if (DOMDetailSunset.dataset.timeTwelveHour) {
-    DOMDetailSunset.textContent = DOMDetailSunset.dataset.timeTwelveHour;
+    changeTextContent(DOMDetailSunset, DOMDetailSunset.dataset.timeTwelveHour);
   }
 }
 function displayTwentyFourHour() {
   // Change main displaying weather time format to 24-hour format
   if (DOMTime.dataset.timeTwentyFourHour) {
-    DOMTime.textContent = DOMTime.dataset.timeTwentyFourHour;
+    changeTextContent(DOMTime, DOMTime.dataset.timeTwentyFourHour);
   }
   // Change all of hours' section's time to 24-hour format
   if (daysHoursToggle.dataset.selected == "hours") {
     const hours = [...daysHoursContainer.children];
     hours.forEach((hour) => {
       if (hour.dataset.timeTwentyFourHour) {
-        hour.getElementsByClassName("weekday-daytime")[0].textContent = hour.dataset.timeTwentyFourHour;
+        changeTextContent(hour.getElementsByClassName("weekday-daytime")[0], hour.dataset.timeTwentyFourHour);
       }
     });
   }
   // Change sunrise & sunset time format to 24-hour
   if (DOMDetailSunrise.dataset.timeTwentyFourHour) {
-    DOMDetailSunrise.textContent = DOMDetailSunrise.dataset.timeTwentyFourHour;
+    changeTextContent(DOMDetailSunrise, DOMDetailSunrise.dataset.timeTwentyFourHour);
   }
   if (DOMDetailSunset.dataset.timeTwentyFourHour) {
-    DOMDetailSunset.textContent = DOMDetailSunset.dataset.timeTwentyFourHour;
+    changeTextContent(DOMDetailSunset, DOMDetailSunset.dataset.timeTwentyFourHour);
   }
 }
 toggleMenu.addEventListener("click", () => {
@@ -555,8 +561,8 @@ function displayForecastDays(days) {
     DOMWeekday.className = "weekday-daytime skeletion-text-loading";
     DOMDayContainer.appendChild(DOMWeekday);
 
-    const DOMIconWraper = document.createElement('div')
-    DOMIconWraper.className ="icon-wrapper"
+    const DOMIconWraper = document.createElement("div");
+    DOMIconWraper.className = "icon-wrapper";
     const DOMIcon = document.createElement("img");
     import("./weather-icons.js").then((module) => {
       DOMIcon.src = module[`icon0${day.icon.split("-").join("0")}`];
@@ -564,7 +570,7 @@ function displayForecastDays(days) {
     DOMIcon.alt = `${day.icon.split("-").join(" ")} icon`;
     DOMIcon.className = "weather-condition-icon skeletion-icon-loading";
     DOMIcon.dataset.icon = day.icon;
-    DOMIconWraper.appendChild(DOMIcon)
+    DOMIconWraper.appendChild(DOMIcon);
     DOMDayContainer.appendChild(DOMIconWraper);
 
     const DOMDayTemperature = document.createElement("p");
@@ -662,8 +668,8 @@ function displayForecastHours(hours) {
     DOMTime.className = "weekday-daytime skeletion-text-loading";
     DOMHourContainer.appendChild(DOMTime);
 
-    const DOMIconWraper = document.createElement('div')
-    DOMIconWraper.className ="icon-wrapper"
+    const DOMIconWraper = document.createElement("div");
+    DOMIconWraper.className = "icon-wrapper";
     const DOMIcon = document.createElement("img");
     import("./weather-icons.js").then((module) => {
       DOMIcon.src = module[`icon0${hour.icon.split("-").join("0")}`];
@@ -671,7 +677,7 @@ function displayForecastHours(hours) {
     DOMIcon.alt = `${hour.icon.split("-").join(" ")} icon`;
     DOMIcon.className = "weather-condition-icon skeletion-icon-loading";
     DOMIcon.dataset.icon = hour.icon;
-    DOMIconWraper.appendChild(DOMIcon)
+    DOMIconWraper.appendChild(DOMIcon);
     DOMHourContainer.appendChild(DOMIconWraper);
 
     const DOMHourTemperature = document.createElement("p");

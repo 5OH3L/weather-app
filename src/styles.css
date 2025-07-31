@@ -633,6 +633,7 @@ body.day #days-hours-container > #days-hours > .day-hour.selected {
   border-radius: 0.4rem;
   overflow-x: hidden;
   width: 90%;
+  transition: opacity 0.3s ease;
 }
 .skeletion-text-loading::before,
 .skeletion-text-loading::after {
