@@ -511,15 +511,11 @@ function displayForecast(data, blinkAimation = false) {
 
     import("./weather-icons.js").then((module) => {
       DOMWeatherConditionIcon.style.transitionDelay = "0s";
-      DOMWeatherConditionIcon.parentElement.style.transitionDelay = "0s";
-      DOMWeatherConditionIcon.parentElement.style.backgroundColor = "var(--section-background-color)";
       DOMWeatherConditionIcon.style.opacity = 0;
       setTimeout(() => {
         DOMWeatherConditionIcon.src = module[`icon0${data.icon.split("-").join("0")}`];
-        DOMWeatherConditionIcon.parentElement.style.backgroundColor = "transparent";
         DOMWeatherConditionIcon.style.opacity = 1;
         setTimeout(() => {
-          DOMWeatherConditionIcon.parentElement.removeAttribute("style");
           DOMWeatherConditionIcon.removeAttribute("style");
         }, 300);
       }, 300);
