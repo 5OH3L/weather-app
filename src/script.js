@@ -234,6 +234,7 @@ function searchWeather() {
     forecastContainer.className = "loading";
     getWeather(search.value)
       .then((response) => {
+        APIResponse = response;
         if (Number(response) == 400) {
           showMessage("Invalid Request", "The request you made was invalid. Please ensure the information is correct and try again.", "OK");
         } else if (Number(response) == 401) {
@@ -252,7 +253,6 @@ function searchWeather() {
           }
           displayForecast(processData(response));
           displayDaysHours(response, response.currentConditions);
-          APIResponse = response;
           localStorage.setItem("APIResponse", JSON.stringify(response));
         }
       })
