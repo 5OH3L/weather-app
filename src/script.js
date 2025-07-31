@@ -88,6 +88,7 @@ function displayFahrenheit() {
   });
 }
 async function changeTextContent(DOMElement, textContent) {
+  if ((DOMElement, DOMElement.textContent == textContent)) return;
   DOMElement.style.opacity = 0;
   await delay(300);
   DOMElement.textContent = textContent;
