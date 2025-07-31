@@ -662,6 +662,8 @@ function displayForecastHours(hours) {
     DOMTime.className = "weekday-daytime skeletion-text-loading";
     DOMHourContainer.appendChild(DOMTime);
 
+    const DOMIconWraper = document.createElement('div')
+    DOMIconWraper.className ="icon-wrapper"
     const DOMIcon = document.createElement("img");
     import("./weather-icons.js").then((module) => {
       DOMIcon.src = module[`icon0${hour.icon.split("-").join("0")}`];
@@ -669,7 +671,8 @@ function displayForecastHours(hours) {
     DOMIcon.alt = `${hour.icon.split("-").join(" ")} icon`;
     DOMIcon.className = "weather-condition-icon skeletion-icon-loading";
     DOMIcon.dataset.icon = hour.icon;
-    DOMHourContainer.appendChild(DOMIcon);
+    DOMIconWraper.appendChild(DOMIcon)
+    DOMHourContainer.appendChild(DOMIconWraper);
 
     const DOMHourTemperature = document.createElement("p");
     if (unitToggleContainer.dataset.temperature == "fahrenheit") {
