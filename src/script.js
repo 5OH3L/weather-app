@@ -447,62 +447,139 @@ async function getWeather(location) {
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-function displayForecast(data) {
+function displayForecast(data, blinkAimation = false) {
   DOMTime.dataset.timeTwelveHour = processTime(data.time);
   DOMTime.dataset.timeTwentyFourHour = data.time.slice(0, 5);
-  if (unitToggleContainer.dataset.time == "twenty-four-hour") {
-    DOMTime.textContent = data.time.slice(0, 5);
-  } else {
-    DOMTime.textContent = processTime(data.time);
-  }
-  DOMDay.textContent = data.weekday;
-  import("./weather-icons.js").then((module) => {
-    DOMDetailIconDate.src = module[`icon0weekday0${data.weekday.toLowerCase()}`];
-  });
+
   DOMTemperature.dataset.celcius = data.temperatureCelcius;
   DOMTemperature.dataset.fahrenheit = data.temperatureFahrenheit;
-  if (unitToggleContainer.dataset.temperature == "fahrenheit") {
-    DOMTemperature.textContent = `${data.temperatureFahrenheit}°F`;
-    DOMFeelslikeTemperature.textContent = `Feels like ${data.feelslikeFahrenheit}°F`;
-  } else {
-    DOMTemperature.textContent = `${data.temperatureCelcius}°C`;
-    DOMFeelslikeTemperature.textContent = `Feels like ${data.feelslikeCelcius}°C`;
-  }
+
   DOMFeelslikeTemperature.dataset.celcius = data.feelslikeCelcius;
   DOMFeelslikeTemperature.dataset.fahrenheit = data.feelslikeFahrenheit;
-  DOMDescription.textContent = data.description;
-  import("./weather-icons.js").then((module) => {
-    const icon = module[`icon0${data.icon.split("-").join("0")}`];
-    DOMWeatherConditionIcon.src = icon;
-  });
-  DOMWeatherCondition.textContent = data.condition;
-  DOMDetailLocation.textContent = data.location;
-  DOMDetailDate.textContent = data.date;
-  DOMDetailHumidity.textContent = data.humidity;
-  DOMDetailUVIndex.textContent = data.uvindex;
-  DOMDetailPrecipitation.textContent = data.precipitation;
-  DOMDetailPressure.textContent = data.pressure;
+
   DOMDetailWind.dataset.kmph = data.windkmph;
   DOMDetailWind.dataset.mph = data.windmph;
   DOMDetailWindGust.dataset.kmph = data.windgustkmph;
   DOMDetailWindGust.dataset.mph = data.windgustmph;
-  if (unitToggleContainer.dataset.speed == "mph") {
-    DOMDetailWind.textContent = `${data.windmph} mph`;
-    DOMDetailWindGust.textContent = `${data.windgustmph ? `${data.windgustmph} mph` : "--"}`;
-  } else {
-    DOMDetailWind.textContent = `${data.windkmph} km/h`;
-    DOMDetailWindGust.textContent = `${data.windgustkmph ? `${data.windgustkmph} km/h` : "--"}`;
-  }
+
   DOMDetailSunrise.dataset.timeTwelveHour = processTime(data.sunrise);
   DOMDetailSunrise.dataset.timeTwentyFourHour = data.sunrise.slice(0, 5);
   DOMDetailSunset.dataset.timeTwelveHour = processTime(data.sunset);
   DOMDetailSunset.dataset.timeTwentyFourHour = data.sunset.slice(0, 5);
-  if (unitToggleContainer.dataset.time == "twenty-four-hour") {
-    DOMDetailSunrise.textContent = data.sunrise.slice(0, 5);
-    DOMDetailSunset.textContent = data.sunset.slice(0, 5);
+  if (blinkAimation) {
+    if (unitToggleContainer.dataset.time == "twenty-four-hour") {
+      changeTextContent(DOMTime, data.time.slice(0, 5));
+    } else {
+      changeTextContent(DOMTime, processTime(data.time));
+    }
+
+    changeTextContent(DOMDay, data.weekday);
+
+    if (unitToggleContainer.dataset.temperature == "fahrenheit") {
+      changeTextContent(DOMTemperature, `${data.temperatureFahrenheit}°F`);
+      changeTextContent(DOMFeelslikeTemperature, `Feels like ${data.feelslikeFahrenheit}°F`);
+    } else {
+      changeTextContent(DOMTemperature, `${data.temperatureCelcius}°C`);
+      changeTextContent(DOMFeelslikeTemperature, `Feels like ${data.feelslikeCelcius}°C`);
+    }
+
+    changeTextContent(DOMDescription, data.description);
+
+    changeTextContent(DOMWeatherCondition, data.condition);
+    changeTextContent(DOMDetailLocation, data.location);
+    changeTextContent(DOMDetailDate, data.date);
+    changeTextContent(DOMDetailHumidity, data.humidity);
+    changeTextContent(DOMDetailUVIndex, data.uvindex);
+    changeTextContent(DOMDetailPrecipitation, data.precipitation);
+    changeTextContent(DOMDetailPressure, data.pressure);
+
+    if (unitToggleContainer.dataset.speed == "mph") {
+      changeTextContent(DOMDetailWind, `${data.windmph} mph`);
+      changeTextContent(DOMDetailWindGust, `${data.windgustmph ? `${data.windgustmph} mph` : "--"}`);
+    } else {
+      changeTextContent(DOMDetailWind, `${data.windkmph} km/h`);
+      changeTextContent(DOMDetailWindGust, `${data.windgustkmph ? `${data.windgustkmph} km/h` : "--"}`);
+    }
+
+    if (unitToggleContainer.dataset.time == "twenty-four-hour") {
+      changeTextContent(DOMDetailSunrise, data.sunrise.slice(0, 5));
+      changeTextContent(DOMDetailSunset, data.sunset.slice(0, 5));
+    } else {
+      changeTextContent(DOMDetailSunrise, processTime(data.sunrise));
+      changeTextContent(DOMDetailSunset, processTime(data.sunset));
+    }
+
+    import("./weather-icons.js").then((module) => {
+      DOMWeatherConditionIcon.style.transitionDelay = "0s";
+      DOMWeatherConditionIcon.parentElement.style.transitionDelay = "0s";
+      DOMWeatherConditionIcon.parentElement.style.backgroundColor = "var(--section-background-color)";
+      DOMWeatherConditionIcon.style.opacity = 0;
+      setTimeout(() => {
+        DOMWeatherConditionIcon.src = module[`icon0${data.icon.split("-").join("0")}`];
+        DOMWeatherConditionIcon.parentElement.style.backgroundColor = "transparent";
+        DOMWeatherConditionIcon.style.opacity = 1;
+        setTimeout(() => {
+          DOMWeatherConditionIcon.parentElement.removeAttribute("style");
+          DOMWeatherConditionIcon.removeAttribute("style");
+        }, 300);
+      }, 300);
+    });
+    import("./weather-icons.js").then((module) => {
+      DOMDetailIconDate.style.opacity = 0;
+      setTimeout(() => {
+        DOMDetailIconDate.src = module[`icon0weekday0${data.weekday.toLowerCase()}`];
+        DOMDetailIconDate.removeAttribute("style");
+      }, 300);
+    });
   } else {
-    DOMDetailSunrise.textContent = processTime(data.sunrise);
-    DOMDetailSunset.textContent = processTime(data.sunset);
+    if (unitToggleContainer.dataset.time == "twenty-four-hour") {
+      DOMTime.textContent = data.time.slice(0, 5);
+    } else {
+      DOMTime.textContent = processTime(data.time);
+    }
+
+    DOMDay.textContent = data.weekday;
+
+    if (unitToggleContainer.dataset.temperature == "fahrenheit") {
+      DOMTemperature.textContent = `${data.temperatureFahrenheit}°F`;
+      DOMFeelslikeTemperature.textContent = `Feels like ${data.feelslikeFahrenheit}°F`;
+    } else {
+      DOMTemperature.textContent = `${data.temperatureCelcius}°C`;
+      DOMFeelslikeTemperature.textContent = `Feels like ${data.feelslikeCelcius}°C`;
+    }
+
+    DOMDescription.textContent = data.description;
+
+    DOMWeatherCondition.textContent = data.condition;
+    DOMDetailLocation.textContent = data.location;
+    DOMDetailDate.textContent = data.date;
+    DOMDetailHumidity.textContent = data.humidity;
+    DOMDetailUVIndex.textContent = data.uvindex;
+    DOMDetailPrecipitation.textContent = data.precipitation;
+    DOMDetailPressure.textContent = data.pressure;
+
+    if (unitToggleContainer.dataset.speed == "mph") {
+      DOMDetailWind.textContent = `${data.windmph} mph`;
+      DOMDetailWindGust.textContent = `${data.windgustmph ? `${data.windgustmph} mph` : "--"}`;
+    } else {
+      DOMDetailWind.textContent = `${data.windkmph} km/h`;
+      DOMDetailWindGust.textContent = `${data.windgustkmph ? `${data.windgustkmph} km/h` : "--"}`;
+    }
+
+    if (unitToggleContainer.dataset.time == "twenty-four-hour") {
+      DOMDetailSunrise.textContent = data.sunrise.slice(0, 5);
+      DOMDetailSunset.textContent = data.sunset.slice(0, 5);
+    } else {
+      DOMDetailSunrise.textContent = processTime(data.sunrise);
+      DOMDetailSunset.textContent = processTime(data.sunset);
+    }
+
+    import("./weather-icons.js").then((module) => {
+      DOMWeatherConditionIcon.src = module[`icon0${data.icon.split("-").join("0")}`];
+    });
+    import("./weather-icons.js").then((module) => {
+      DOMDetailIconDate.src = module[`icon0weekday0${data.weekday.toLowerCase()}`];
+    });
   }
 }
 function processDays(days) {
@@ -537,7 +614,7 @@ function loadSelectedDay(elementIndex) {
   ) {
     daysHoursContainer.dataset.selectedHourIndex = getCurrentHour();
   }
-  displayForecast(processData(APIResponse, elementIndex));
+  displayForecast(processData(APIResponse, elementIndex), true);
 }
 function getCurrentHour() {
   return Number(APIResponse.currentConditions.datetime.slice(0, 2));
@@ -643,7 +720,7 @@ function loadSelectedHour(elementIndex) {
       child.className = "day-hour";
     }
   });
-  displayForecast(processData(APIResponse, daysHoursContainer.dataset.selectedDayIndex, elementIndex));
+  displayForecast(processData(APIResponse, daysHoursContainer.dataset.selectedDayIndex, elementIndex), true);
 }
 function isAdditionalHour(data) {
   return Number(data.currentConditions.datetime.slice(0, 5).split(":")[1]) != 0;
