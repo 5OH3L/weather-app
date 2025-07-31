@@ -511,6 +511,7 @@ function displayForecast(data, blinkAimation = false) {
     }
 
     import("./weather-icons.js").then((module) => {
+      if (DOMWeatherConditionIcon.src == module[`icon0${data.icon.split("-").join("0")}`]) return;
       DOMWeatherConditionIcon.style.transitionDelay = "0s";
       DOMWeatherConditionIcon.style.opacity = 0;
       setTimeout(() => {
@@ -522,6 +523,7 @@ function displayForecast(data, blinkAimation = false) {
       }, 300);
     });
     import("./weather-icons.js").then((module) => {
+      if (DOMDetailIconDate.src == module[`icon0weekday0${data.weekday.toLowerCase()}`]) return;
       DOMDetailIconDate.style.opacity = 0;
       setTimeout(() => {
         DOMDetailIconDate.src = module[`icon0weekday0${data.weekday.toLowerCase()}`];
